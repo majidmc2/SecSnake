@@ -18,5 +18,6 @@ function logURL(requestDetails) {
 
 browser.webRequest.onBeforeRequest.addListener(
 	logURL,
-	{urls: ["<all_urls>"]}
+	{urls: ["<all_urls>"]},
+	["blocking"]
 );
