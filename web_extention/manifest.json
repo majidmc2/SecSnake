@@ -1,0 +1,27 @@
+{
+
+  "description": "Native messaging example add-on",
+  "manifest_version": 2,
+  "name": "SecSnake",
+  "version": "1.0",
+
+  "applications": {
+    "gecko": {
+      "id": "SecSnake@example.org",
+      "strict_min_version": "50.0"
+    }
+  },
+
+  "background": {
+    "scripts": ["background.js"]
+  },
+
+ 
+  "permissions": [
+    "nativeMessaging",
+    "webRequest",
+    "<all_urls>",
+    "webNavigation"
+  ]
+
+}
