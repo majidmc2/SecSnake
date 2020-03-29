@@ -1,23 +1,40 @@
-var port = browser.runtime.connectNative("secsnake_client");
-var cont = 0
+// var port = browser.runtime.connectNative("secsnake_client");
+// var cont = 0
 
-function logURL(requestDetails) {
-	console.log("Loading: " + requestDetails.url);
+// function logURL(requestDetails) {
+// 	console.log("Loading: " + requestDetails.url);
 
-	port.postMessage("Ping");
+// 	port.postMessage("Ping");
 
-	port.onMessage.addListener((response) => {
-		console.log("Received: " + response);
-	});
+// 	port.onMessage.addListener((response) => {
+// 		console.log("Received: " + response);
+// 	});
 
-	console.log("Counter of URLs: " + cont);
-	cont ++;
+// 	console.log("Counter of URLs: " + cont);
+// 	cont ++;
+
+// }
+
+// function showTab(event) {
+// 	// event is same to 'event' in 'JS Handler Function'!!!
+// 	console.log("--------> Loading: " + event.url + " tabID: " + event.tabId);
+// }
+
+// browser.webRequest.onBeforeRequest.addListener(
+// 	showTab,
+// 	{urls: ["<all_urls>"], tabId: 9}, // This is a filter and has not 'event' in Handler Function!!!
+// 	["blocking"]
+// );
 
 
-}
-
-browser.webRequest.onBeforeRequest.addListener(
-	logURL,
-	{urls: ["<all_urls>"]},
-	["blocking"]
-);
+function rewriteUserAgentHeader(e) {
+	console.log("-------> The URL: " + e.originUrl)
+	for (var header of e.requestHeaders) {
+		console.log("-------> Header Fileds: " + header.name + " = " + header.value);
+	}
+	console.log("----------------");
+  }
+  
+  browser.webRequest.onBeforeSendHeaders.addListener(rewriteUserAgentHeader,
+											{urls: ["<all_urls>"]},
+											["blocking", "requestHeaders"]);

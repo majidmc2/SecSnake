@@ -11,6 +11,12 @@
       "strict_min_version": "50.0"
     }
   },
+  
+  "content_scripts": [{
+      "js":["contentscript.js"],
+      "matches":["<all_urls>"]
+    }
+  ],
 
   "background": {
     "scripts": ["background.js"]
