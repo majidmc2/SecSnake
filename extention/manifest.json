@@ -1,0 +1,35 @@
+{
+
+  "description": "SecSbake add-on",
+  "manifest_version": 2,
+  "name": "SecSnake",
+  "version": "1.0",
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{bb3ff054-d96d-11ea-ab75-85908bff670e}"
+    }
+  },
+
+  "content_scripts": [{
+      "js":["contentscript.js"],
+      "matches":["<all_urls>"]
+    }
+  ],
+
+  "background": {
+    "scripts": ["background.js"]
+  },
+
+ 
+  "permissions": [
+    "nativeMessaging",
+    "webRequest",
+    "<all_urls>",
+    "webNavigation",
+    "webRequestBlocking",
+    "tabs"
+  ]
+
+}
+

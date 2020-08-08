@@ -1,0 +1,1024 @@
+<body data-slug="Mozilla/Add-ons/WebExtensions/API/tabs/query" contextmenu="" data-search-url="" class="document" style="border: 10px solid blue;">
+
+  <script>
+    // make sure global mdn object exists
+    var mdn = window.mdn || {};
+
+    (function(win) {
+        'use strict';
+            (function(){
+  var FLAGS = {
+    'kumaediting': false,'page_move': false,'section_edit': false,'spam_checks_enabled': true,'spam_submissions_enabled': false,'spam_admin_override': false,'spam_spammer_override': false,'spam_testing_mode': false,'sg_task_completion': false,'contrib_beta': false,'recurring_payment_beta': false,'subscription': false,'subscription_banner': false,'subscription_form': false,'user_interviews': false
+    },
+    SWITCHES = {
+    'welcome_email': true,'application_ACAO': true,'store_revision_ips': true,'foundation_callout': false,'helpful-survey-2': true,'wiki_spam_training': true,'registration_disabled': false,'developer_needs': false
+    },
+    SAMPLES = {
+    
+    };
+  window.waffle = {
+    "flag_is_active": function waffle_flag(flag_name) {
+      
+      return !!FLAGS[flag_name];
+    },
+    "switch_is_active": function waffle_switch(switch_name) {
+      
+      return !!SWITCHES[switch_name];
+    },
+    "sample_is_active": function waffle_sample(sample_name) {
+      
+      return !!SAMPLES[sample_name];
+    },
+    "FLAGS": FLAGS,
+    "SWITCHES": SWITCHES,
+    "SAMPLES": SAMPLES
+  };
+})();
+
+
+            // This needs to be set before ckeditor.js loads
+            window.CKEDITOR_BASEPATH = '/static/js/libs/ckeditor4/build/ckeditor/';
+
+            // Site configuration
+            win.mdn.ckeditor = {};
+
+        win.mdn.features = {};
+        win.mdn.stripePublicKey = 'pk_live_GZl4tCi8J5mWhKbJeRey4DSy';
+        win.mdn.contributionSupportEmail = 'mdn-support@mozilla.com';
+
+        win.mdn.siteUrl = 'https://developer.mozilla.org';
+        win.mdn.wikiSiteUrl = 'https://wiki.developer.mozilla.org';
+        win.mdn.staticPath = '/static/';
+        win.mdn.wiki = {
+            autosuggestTitleUrl: '/en-US/docs/get-documents'
+        };
+        win.mdn.assets = {
+            css: {
+                'editor-content': ['/static/build/styles/editor-content.9098ececa59a.css',
+                ],
+
+                'wiki-compat-tables': ['/static/build/styles/wiki-compat-tables.6edbecdeb6ef.css',]
+            },
+            js: {
+                'syntax-prism': ['/static/build/js/syntax-prism.c9211fca56ae.js',],
+                'wiki-compat-tables': ['/static/build/js/wiki-compat-tables.3a4ab2cc8ca1.js',]
+            }
+        };
+
+        win.mdn.notifications = [];
+
+        
+
+        // interactive editor config
+        win.mdn.interactiveEditor = {
+            siteUrl: "https://developer.mozilla.org",
+            editorUrl: "https://interactive-examples.mdn.mozilla.net"
+        };
+        win.mdn.langCookieName = "django_language";
+
+    })(this);
+</script>
+    
+    <ul id="nav-access">
+  <li><a href="#content" id="skip-main">Skip to main content</a></li>
+  <li><a id="skip-language" href="#language">Select language</a></li>
+  <li><a href="#q" id="skip-search">Skip to search</a></li>
+</ul>
+
+    
+    
+    
+        
+<div class="mdn-wiki-notice">
+    <h3>You are on the <strong>editable</strong> version of MDN Web Docs</h3>
+    <p>View as an MDN Web Docs user:
+        <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/query">https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/query</a>
+    </p>
+</div>
+    
+
+
+    <!-- Header -->
+    <header id="main-header" class="header-main">
+      <a href="/en-US/" class="logo">MDN Web Docs</a>
+      <div class="nav-toolbox-wrapper">
+        <nav id="main-nav" class="nav-main" role="navigation">
+    <ul>
+        <li class="nav-main-item">
+            <a href="/en-US/docs/Web">Technologies
+                <svg class="icon icon-caret-down" xmlns="http://www.w3.org/2000/svg" width="16" height="28" viewBox="0 0 16 28"><path d="M16 11a.99.99 0 0 1-.297.703l-7 7C8.516 18.89 8.265 19 8 19s-.516-.109-.703-.297l-7-7A.996.996 0 0 1 0 11c0-.547.453-1 1-1h14c.547 0 1 .453 1 1z"></path></svg>
+            </a>
+            <div class="submenu js-submenu" id="nav-tech-submenu">
+                <div class="submenu-column">
+                  <ul>
+                    <li><a href="/en-US/docs/Web/HTML">HTML</a></li>
+                    <li><a href="/en-US/docs/Web/CSS">CSS</a></li>
+                    <li><a href="/en-US/docs/Web/JavaScript">JavaScript</a></li>
+                    <li><a href="/en-US/docs/Web/Guide/Graphics">Graphics</a></li>
+                    <li><a href="/en-US/docs/Web/HTTP">HTTP</a></li>
+                    <li><a href="/en-US/docs/Web/API">APIs / DOM</a></li>
+                    <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions">Browser Extensions</a></li>
+                    <li><a href="/en-US/docs/Web/MathML">MathML</a></li>
+                  </ul>
+                </div>
+            </div>
+        </li>
+        <li class="nav-main-item">
+            <a href="/en-US/docs/Learn">References &amp; Guides
+                <svg class="icon icon-caret-down" xmlns="http://www.w3.org/2000/svg" width="16" height="28" viewBox="0 0 16 28"><path d="M16 11a.99.99 0 0 1-.297.703l-7 7C8.516 18.89 8.265 19 8 19s-.516-.109-.703-.297l-7-7A.996.996 0 0 1 0 11c0-.547.453-1 1-1h14c.547 0 1 .453 1 1z"></path></svg>
+            </a>
+            <div class="submenu js-submenu" id="nav-learn-submenu">
+                <div class="submenu-column">
+                  <ul>
+                    <li><a href="/en-US/docs/Learn">Learn web development</a></li>
+                    <li><a href="/en-US/docs/Web/Tutorials">Tutorials</a></li>
+                    <li><a href="/en-US/docs/Web/Reference">References</a></li>
+                    <li><a href="/en-US/docs/Web/Guide">Developer Guides</a></li>
+                    <li><a href="/en-US/docs/Web/Accessibility">Accessibility</a></li>
+                    <li><a href="/en-US/docs/Games">Game development</a></li>
+                    <li><a href="/en-US/docs/Web">...more docs</a></li>
+                  </ul>
+                </div>
+            </div>
+        </li>
+        <li class="nav-main-item">
+            <a href="/en-US/docs/MDN/Feedback">Feedback
+                <svg class="icon icon-caret-down" xmlns="http://www.w3.org/2000/svg" width="16" height="28" viewBox="0 0 16 28"><path d="M16 11a.99.99 0 0 1-.297.703l-7 7C8.516 18.89 8.265 19 8 19s-.516-.109-.703-.297l-7-7A.996.996 0 0 1 0 11c0-.547.453-1 1-1h14c.547 0 1 .453 1 1z"></path></svg>
+            </a>
+            <div class="submenu js-submenu" id="nav-contact-submenu">
+              <div class="submenu-column">
+                <ul>
+                  <li>
+                      <a href="https://support.mozilla.org/">Get Firefox help
+                          <svg class="icon icon-external-link" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path d="M22 14.5v5c0 2.484-2.016 4.5-4.5 4.5h-13A4.502 4.502 0 0 1 0 19.5v-13C0 4.016 2.016 2 4.5 2h11c.281 0 .5.219.5.5v1c0 .281-.219.5-.5.5h-11A2.507 2.507 0 0 0 2 6.5v13C2 20.875 3.125 22 4.5 22h13c1.375 0 2.5-1.125 2.5-2.5v-5c0-.281.219-.5.5-.5h1c.281 0 .5.219.5.5zM28 1v8c0 .547-.453 1-1 1a.99.99 0 0 1-.703-.297l-2.75-2.75L13.36 17.14c-.094.094-.234.156-.359.156s-.266-.063-.359-.156l-1.781-1.781c-.094-.094-.156-.234-.156-.359s.063-.266.156-.359L21.048 4.454l-2.75-2.75a.996.996 0 0 1-.297-.703c0-.547.453-1 1-1h8c.547 0 1 .453 1 1z"></path></svg>
+                      </a>
+                  </li>
+                  <li>
+                      <a href="https://stackoverflow.com/">Get web development help
+                          <svg class="icon icon-external-link" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path d="M22 14.5v5c0 2.484-2.016 4.5-4.5 4.5h-13A4.502 4.502 0 0 1 0 19.5v-13C0 4.016 2.016 2 4.5 2h11c.281 0 .5.219.5.5v1c0 .281-.219.5-.5.5h-11A2.507 2.507 0 0 0 2 6.5v13C2 20.875 3.125 22 4.5 22h13c1.375 0 2.5-1.125 2.5-2.5v-5c0-.281.219-.5.5-.5h1c.281 0 .5.219.5.5zM28 1v8c0 .547-.453 1-1 1a.99.99 0 0 1-.703-.297l-2.75-2.75L13.36 17.14c-.094.094-.234.156-.359.156s-.266-.063-.359-.156l-1.781-1.781c-.094-.094-.156-.234-.156-.359s.063-.266.156-.359L21.048 4.454l-2.75-2.75a.996.996 0 0 1-.297-.703c0-.547.453-1 1-1h8c.547 0 1 .453 1 1z"></path></svg>
+                      </a>
+                  </li>
+                </ul>
+                <ul>
+                  <li>
+                      <a href="/en-US/docs/MDN/Community">Join the MDN community</a>
+                  </li>
+                  <li>
+                      <a target="_blank" rel="noopener" href="https://github.com/mdn/sprints/issues/new?template=issue-template.md&amp;projects=mdn/sprints/2&amp;labels=user-report&amp;title=https%3A//wiki.developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/query">Report a content problem
+                          <svg class="icon icon-external-link" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path d="M22 14.5v5c0 2.484-2.016 4.5-4.5 4.5h-13A4.502 4.502 0 0 1 0 19.5v-13C0 4.016 2.016 2 4.5 2h11c.281 0 .5.219.5.5v1c0 .281-.219.5-.5.5h-11A2.507 2.507 0 0 0 2 6.5v13C2 20.875 3.125 22 4.5 22h13c1.375 0 2.5-1.125 2.5-2.5v-5c0-.281.219-.5.5-.5h1c.281 0 .5.219.5.5zM28 1v8c0 .547-.453 1-1 1a.99.99 0 0 1-.703-.297l-2.75-2.75L13.36 17.14c-.094.094-.234.156-.359.156s-.266-.063-.359-.156l-1.781-1.781c-.094-.094-.156-.234-.156-.359s.063-.266.156-.359L21.048 4.454l-2.75-2.75a.996.996 0 0 1-.297-.703c0-.547.453-1 1-1h8c.547 0 1 .453 1 1z"></path></svg>
+                      </a>
+                  </li>
+                  <li>
+                      <a target="_blank" rel="noopener" href="https://github.com/mdn/kuma/issues/new/choose">Report an issue
+                          <svg class="icon icon-external-link" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path d="M22 14.5v5c0 2.484-2.016 4.5-4.5 4.5h-13A4.502 4.502 0 0 1 0 19.5v-13C0 4.016 2.016 2 4.5 2h11c.281 0 .5.219.5.5v1c0 .281-.219.5-.5.5h-11A2.507 2.507 0 0 0 2 6.5v13C2 20.875 3.125 22 4.5 22h13c1.375 0 2.5-1.125 2.5-2.5v-5c0-.281.219-.5.5-.5h1c.281 0 .5.219.5.5zM28 1v8c0 .547-.453 1-1 1a.99.99 0 0 1-.703-.297l-2.75-2.75L13.36 17.14c-.094.094-.234.156-.359.156s-.266-.063-.359-.156l-1.781-1.781c-.094-.094-.156-.234-.156-.359s.063-.266.156-.359L21.048 4.454l-2.75-2.75a.996.996 0 0 1-.297-.703c0-.547.453-1 1-1h8c.547 0 1 .453 1 1z"></path></svg>
+                      </a>
+                  </li>
+                </ul>
+              </div>
+          </div>
+      </li>
+  </ul>
+</nav>
+        <div id="toolbox" class="toolbox">
+  <ul>
+    
+    <li class="nav-login"><div class="login">
+    
+        
+        <a href="/en-US/users/account/signup-landing?next=%2Fen-US%2Fdocs%2FMozilla%2FAdd-ons%2FWebExtensions%2FAPI%2Ftabs%2Fquery" class="login-link js-login-link" rel="nofollow">
+            Sign in
+        </a>
+    
+</div></li>
+  </ul>
+</div>
+      </div>
+      <form id="nav-main-search" action="/en-US/search" method="get" role="search" class="nav-main-search">
+  <div class="search-wrap">
+    <label for="main-q" class="offscreen">Search</label>
+    <input type="search" id="main-q" name="q" placeholder="Search" data-value="" value="" aria-hidden="true">
+    <span class="search-trigger">
+        <svg class="icon icon-search" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="nonzero" d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 001.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 00-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 005.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg>
+    </span>
+    <button type="submit" class="offscreen">Search</button>
+    <button type="button" id="close-header-search" class="close-header-search transparent">
+        <span class="offscreen">Close search</span>
+        <svg class="icon icon-close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" role="img"><title></title><path d="M18.3 5.71a.996.996 0 00-1.41 0L12 10.59 7.11 5.7A.996.996 0 105.7 7.11L10.59 12 5.7 16.89a.996.996 0 101.41 1.41L12 13.41l4.89 4.89a.996.996 0 101.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4z" fill-rule="nonzero"></path></svg>
+    </button>
+  </div>
+</form>
+    </header> 
+
+  <!-- Content will go here -->
+  <main id="content" role="main">
+      
+  <!-- heading -->
+  <div id="wiki-document-head" class="document-head">
+    <div class="center">
+      <div class="document-title">
+        <h1>tabs.query()</h1>
+      </div>
+
+      <!-- action buttons -->
+      <div class="document-actions">
+        
+
+  
+    
+  
+
+  
+    
+    
+        
+    
+  
+
+  
+
+  <ul class="page-buttons">
+      <li>
+          <button id="languages-menu" class="transparent" aria-haspopup="true" aria-owns="languages-menu-submenu" aria-expanded="false">
+              <svg class="icon icon-language" xmlns="http://www.w3.org/2000/svg" width="24" height="28" viewBox="0 0 24 28" aria-hidden="true">
+    <path d="M10.219 16.844c-.031.109-.797-.25-1-.328-.203-.094-1.125-.609-1.359-.766s-1.125-.891-1.234-.938a28.275 28.275 0 0 1-2.094 2.828c-.281.328-1.125 1.391-1.641 1.719-.078.047-.531.094-.594.063.25-.187.969-1.078 1.281-1.437.391-.453 2.25-3.047 2.562-3.641.328-.594 1.312-2.562 1.359-2.75-.156-.016-1.391.406-1.719.516-.313.094-1.172.297-1.234.344-.063.063-.016.25-.047.313s-.313.203-.484.234a1.647 1.647 0 0 1-.734 0c-.203-.047-.391-.25-.438-.328 0 0-.063-.094-.078-.359.187-.063.5-.078.844-.172s1.188-.344 1.641-.5 1.328-.484 1.594-.547c.281-.047.984-.516 1.359-.641s.641-.281.656-.203 0 .422-.016.516c-.016.078-.766 1.547-.875 1.781-.063.125-.5.953-1.203 2.047.25.109.781.328 1 .438.266.125 2.125.906 2.219.938s.266.75.234.875zM7.016 9.25c.047.266-.031.375-.063.438-.156.297-.547.5-.781.594s-.625.187-.938.187c-.141-.016-.422-.063-.766-.406-.187-.203-.328-.75-.266-.688s.516.125.719.078.688-.187.906-.25c.234-.078.703-.203.859-.219.156 0 .281.063.328.266zm10.906 2.016l.984 3.547-2.172-.656zM.609 23.766l10.844-3.625V4.016L.609 7.657v16.109zM20 18.813l1.594.484-2.828-10.266-1.563-.484-3.375 8.375 1.594.484.703-1.719 3.297 1.016zM12.141 3.781l8.953 2.875V.718zM17 24.453l2.469.203-.844 2.5L18 26.125c-1.266.812-2.828 1.437-4.312 1.687-.453.094-.969.187-1.422.187h-1.313c-1.656 0-4.672-.984-5.984-1.937-.094-.078-.125-.141-.125-.25 0-.172.125-.297.281-.297.141 0 .875.453 1.078.547 1.406.703 3.375 1.344 4.953 1.344 1.953 0 3.281-.25 5.063-1.016.516-.234.969-.531 1.453-.797zm7-16.859v16.859c-12.078-3.844-12.094-3.844-12.094-3.844C11.656 20.718.453 24.5.297 24.5a.3.3 0 0 1-.281-.203c0-.016-.016-.031-.016-.047V7.406c.016-.047.031-.125.063-.156.094-.109.219-.141.313-.172.047-.016 1-.328 2.328-.781v-6l8.719 3.094C11.532 3.36 21.251 0 21.392 0c.172 0 .313.125.313.328v6.531z"></path>
+</svg>
+              <span>Languages</span>
+          </button>
+
+        <div class="submenu js-submenu" id="languages-menu-submenu">
+          <div class="submenu-column">
+            <ul id="translations">
+              
+                
+                
+                
+                  <li lang="fr"><bdi><a rel="internal" href="/fr/docs/Mozilla/Add-ons/WebExtensions/API/tabs/query" data-locale="fr" title="French">Français (fr)</a></bdi></li>
+                
+                  <li lang="ja"><bdi><a rel="internal" href="/ja/docs/Mozilla/Add-ons/WebExtensions/API/tabs/query" data-locale="ja" title="Japanese">日本語 (ja)</a></bdi></li>
+                
+              
+
+              
+                <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/query$locales" rel="nofollow" id="translations-add">Add a translation</a></li>
+              
+            </ul>
+          </div>
+        </div>
+      </li>
+      
+      <li class="page-buttons-edit">
+          <a href="/en-US/users/signin?next=/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/query%24edit" class="button neutral" id="edit-button" rel="nofollow">
+              <svg class="icon icon-pencil" xmlns="http://www.w3.org/2000/svg" width="24" height="28" viewBox="0 0 24 28" aria-hidden="true">
+    <path d="M5.672 24l1.422-1.422-3.672-3.672L2 20.328V22h2v2h1.672zm8.172-14.5a.329.329 0 0 0-.344-.344.368.368 0 0 0-.266.109l-8.469 8.469a.366.366 0 0 0-.109.266c0 .203.141.344.344.344a.368.368 0 0 0 .266-.109l8.469-8.469a.366.366 0 0 0 .109-.266zM13 6.5l6.5 6.5-13 13H0v-6.5zM23.672 8c0 .531-.219 1.047-.578 1.406L20.5 12 14 5.5l2.594-2.578c.359-.375.875-.594 1.406-.594s1.047.219 1.422.594l3.672 3.656c.359.375.578.891.578 1.422z"></path>
+</svg>
+              Edit
+          </a>
+      </li>
+      
+
+        
+
+        <li class="page-buttons-advanced">
+            <button id="advanced-menu" class="only-icon" aria-haspopup="true" aria-owns="advanced-menu-submenu" aria-expanded="false">
+                <svg class="icon icon-gear" xmlns="http://www.w3.org/2000/svg" width="24" height="28" viewBox="0 0 24 28" aria-hidden="true">
+    <path d="M16 14c0-2.203-1.797-4-4-4s-4 1.797-4 4 1.797 4 4 4 4-1.797 4-4zm8-1.703v3.469c0 .234-.187.516-.438.562l-2.891.438a8.86 8.86 0 0 1-.609 1.422c.531.766 1.094 1.453 1.672 2.156.094.109.156.25.156.391s-.047.25-.141.359c-.375.5-2.484 2.797-3.016 2.797a.795.795 0 0 1-.406-.141l-2.156-1.687a9.449 9.449 0 0 1-1.422.594c-.109.953-.203 1.969-.453 2.906a.573.573 0 0 1-.562.438h-3.469c-.281 0-.531-.203-.562-.469l-.438-2.875a9.194 9.194 0 0 1-1.406-.578l-2.203 1.672c-.109.094-.25.141-.391.141s-.281-.063-.391-.172c-.828-.75-1.922-1.719-2.578-2.625a.607.607 0 0 1 .016-.718c.531-.719 1.109-1.406 1.641-2.141a8.324 8.324 0 0 1-.641-1.547l-2.859-.422A.57.57 0 0 1 0 15.705v-3.469c0-.234.187-.516.422-.562l2.906-.438c.156-.5.359-.969.609-1.437a37.64 37.64 0 0 0-1.672-2.156c-.094-.109-.156-.234-.156-.375s.063-.25.141-.359c.375-.516 2.484-2.797 3.016-2.797.141 0 .281.063.406.156L7.828 5.94a9.449 9.449 0 0 1 1.422-.594c.109-.953.203-1.969.453-2.906a.573.573 0 0 1 .562-.438h3.469c.281 0 .531.203.562.469l.438 2.875c.484.156.953.344 1.406.578l2.219-1.672c.094-.094.234-.141.375-.141s.281.063.391.156c.828.766 1.922 1.734 2.578 2.656a.534.534 0 0 1 .109.344c0 .141-.047.25-.125.359-.531.719-1.109 1.406-1.641 2.141.266.5.484 1.016.641 1.531l2.859.438a.57.57 0 0 1 .453.562z"></path>
+</svg>
+                <span>Advanced</span>
+            </button>
+            <div class="submenu js-submenu" id="advanced-menu-submenu">
+                <!-- this page -->
+                <div class="submenu-column">
+                    <div class="title">Advanced</div>
+                    <ul>
+                        <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/query$history" rel="nofollow">History</a></li>
+                        
+                        
+                        
+
+
+                
+
+                <li class="page-print"><a href="#" onclick="return window.print();">Print this article</a></li>
+            </ul>
+          </div>
+        </div>
+  </li></ul>
+      </div>
+    </div>
+  </div>
+  
+  <div id="toc" class="toc">
+    <div class="center">
+      <div class="toc-head">Jump to:</div>
+        <ol class="toc-links">
+          <li><a href="#Syntax" rel="internal">Syntax</a></li><li><a href="#Examples" rel="internal" class="toc-current">Examples</a></li><li><a href="#Browser_compatibility" rel="internal">Browser compatibility</a>
+        </li></ol>
+    </div>
+  </div>
+  
+
+      <div class="center clear">
+      
+
+    <div class="wiki-main-content" id="document-main"><div class="center">
+      <!-- start the main content container -->
+        <div id="wiki-column-container" class="wiki-left-present">
+
+          <!-- content row with three strips -->
+          <div class="column-container column-container-reverse">
+
+            <!-- center: main article content -->
+            <div id="wiki-content" class="column-main wiki-column text-content">
+
+              
+
+              
+              
+
+              
+
+              
+              
+
+              <!-- just the article content -->
+              <article id="wikiArticle">
+                
+                  
+                    <div></div>
+
+<p>Gets all tabs that have the specified properties, or all tabs if no properties are specified.</p>
+
+<p>This is an asynchronous function that returns a <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code>.</p>
+
+<h2 id="Syntax">Syntax<a class="local-anchor" href="https://wiki.developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/query#Syntax" data-heading-id="Syntax"><svg class="icon icon-link" version="1.1" width="24" height="28" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"></path></svg><span>Section</span></a></h2>
+
+<pre class="syntaxbox brush:js notranslate">let querying = browser.tabs.query(<var>queryObj</var>)
+</pre>
+
+<h3 id="Parameters" class="highlight-spanned"><span class="highlight-span">Parameters</span><a class="local-anchor" href="https://wiki.developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/query#Parameters" data-heading-id="Parameters"><svg class="icon icon-link" version="1.1" width="24" height="28" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"></path></svg><span>Section</span></a></h3>
+
+<dl>
+ <dt><code><var>queryObj</var></code></dt>
+ <dd>
+ <p><code>object</code>. The <code>query()</code> function will only get tabs whose properties match the properties included here.</p>
+
+ <p>See the <a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/Tab" title="The type tabs.Tab contains information about a tab. This provides access to information about what content is in the tab, how large the content is, what special states or restrictions are in effect, and so forth."><code>tabs.Tab</code></a> documentation to learn more about these properties.</p>
+
+ <dl class="reference-values">
+  <dt><code>active</code><span class="inlineIndicator optional optionalInline">Optional</span></dt>
+  <dd><code>boolean</code>. Whether the tabs are active in their windows.</dd>
+  <dt><code>audible</code><span class="inlineIndicator optional optionalInline">Optional</span></dt>
+  <dd><code>boolean</code>. Whether the tabs are audible.</dd>
+  <dt><code>autoDiscardable</code><span class="inlineIndicator optional optionalInline">Optional</span></dt>
+  <dd><code>boolean</code>. Whether the tabs can be discarded automatically by the browser when resources are low.</dd>
+  <dt><code>cookieStoreId</code> <span class="inlineIndicator optional optionalInline">Optional</span></dt>
+  <dd><code>string</code>. Use this to return only tabs whose cookie store ID is <code>cookieStoreId</code>. This option is only available if the add-on has the <code>"cookies"</code> <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions">permission</a>.</dd>
+  <dt><code>currentWindow</code><span class="inlineIndicator optional optionalInline">Optional</span></dt>
+  <dd><code>boolean</code>. Whether the tabs are in the current window.</dd>
+  <dt><code>discarded</code><span class="inlineIndicator optional optionalInline">Optional</span></dt>
+  <dd><code>boolean</code>. Whether the tabs are discarded. A discarded tab is one whose content has been unloaded from memory, but is still visible in the tab strip. Its content gets reloaded the next time it's activated.</dd>
+  <dt><code>hidden</code><span class="inlineIndicator optional optionalInline">Optional</span></dt>
+  <dd><code>boolean</code>. Whether the tabs are hidden.</dd>
+  <dt><code>highlighted</code><span class="inlineIndicator optional optionalInline">Optional</span></dt>
+  <dd><code>boolean</code>. Whether the tabs are highlighted.</dd>
+  <dt><code>index</code><span class="inlineIndicator optional optionalInline">Optional</span></dt>
+  <dd><code>integer</code>. The position of the tabs within their windows.</dd>
+  <dt><code>muted</code><span class="inlineIndicator optional optionalInline">Optional</span></dt>
+  <dd><code>boolean</code>. Whether the tabs are muted.</dd>
+  <dt><code>lastFocusedWindow</code><span class="inlineIndicator optional optionalInline">Optional</span></dt>
+  <dd><code>boolean</code>. Whether the tabs are in the last focused window.</dd>
+  <dt><code>pinned</code><span class="inlineIndicator optional optionalInline">Optional</span></dt>
+  <dd><code>boolean</code>. Whether the tabs are pinned.</dd>
+  <dt><code>status</code><span class="inlineIndicator optional optionalInline">Optional</span></dt>
+  <dd><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/TabStatus" title="Indicates whether the tab has finished loading."><code>tabs.TabStatus</code></a>. Whether the tabs have completed loading.</dd>
+  <dt><code>title</code><span class="inlineIndicator optional optionalInline">Optional</span></dt>
+  <dd><code>string</code>. Match page titles against a pattern.</dd>
+  <dt><code>url</code><span class="inlineIndicator optional optionalInline">Optional</span></dt>
+  <dd><code><code>string</code></code> or <code><code>array</code> of <code><code>string</code></code></code>. Match tabs against one or more <a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Match_patterns">match patterns</a>. Note that fragment identifiers are not matched.</dd>
+  <dt><code>windowId</code><span class="inlineIndicator optional optionalInline">Optional</span></dt>
+  <dd><code>integer</code>. The <code>id</code> of the parent window, or <a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/windows/WINDOW_ID_CURRENT" title="browser.windows.WINDOW_ID_CURRENT is a value that can be used as a windowId parameter in some APIs to represent the current window."><code>windows.WINDOW_ID_CURRENT</code></a> for the current window.</dd>
+  <dt><code>windowType</code><span class="inlineIndicator optional optionalInline">Optional</span></dt>
+  <dd><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/WindowType" title="The type of window that hosts this tab."><code>tabs.WindowType</code></a>. The type of window the tabs are in.</dd>
+ </dl>
+ </dd>
+</dl>
+
+<h3 id="Return_value" class="highlight-spanned"><span class="highlight-span">Return value</span><a class="local-anchor" href="https://wiki.developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/query#Return_value" data-heading-id="Return_value"><svg class="icon icon-link" version="1.1" width="24" height="28" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"></path></svg><span>Section</span></a></h3>
+
+<p>A <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code> that will be fulfilled with an <code>array</code> of <code><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/Tab" title="The type tabs.Tab contains information about a tab. This provides access to information about what content is in the tab, how large the content is, what special states or restrictions are in effect, and so forth."><code>tabs.Tab</code></a></code> objects, containing information about each matching tab.</p>
+
+<p>If any error occurs, the promise will be rejected with an error message.</p>
+
+<h2 id="Examples">Examples<a class="local-anchor" href="https://wiki.developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/query#Examples" data-heading-id="Examples"><svg class="icon icon-link" version="1.1" width="24" height="28" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"></path></svg><span>Section</span></a></h2>
+
+<p>Get all tabs:</p>
+
+<pre class="brush: js notranslate line-numbers language-js"><code class=" language-js"><span class="token keyword">function</span> <span class="token function">logTabs</span><span class="token punctuation">(</span><span class="token parameter">tabs</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> tab <span class="token keyword">of</span> tabs<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// tab.url requires the `tabs` permission</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>tab<span class="token punctuation">.</span>url<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">onError</span><span class="token punctuation">(</span><span class="token parameter">error</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Error: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>error<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">let</span> querying <span class="token operator">=</span> browser<span class="token punctuation">.</span>tabs<span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+querying<span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>logTabs<span class="token punctuation">,</span> onError<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>Get all tabs in the current window:</p>
+
+<pre class="brush: js notranslate line-numbers language-js"><code class=" language-js"><span class="token keyword">function</span> <span class="token function">logTabs</span><span class="token punctuation">(</span><span class="token parameter">tabs</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> tab <span class="token keyword">of</span> tabs<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// tab.url requires the `tabs` permission</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>tab<span class="token punctuation">.</span>url<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">onError</span><span class="token punctuation">(</span><span class="token parameter">error</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Error: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>error<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">let</span> querying <span class="token operator">=</span> browser<span class="token punctuation">.</span>tabs<span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span><span class="token punctuation">{</span>currentWindow<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+querying<span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>logTabs<span class="token punctuation">,</span> onError<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>Get the active tab in the current window:</p>
+
+<pre class="brush: js notranslate line-numbers language-js"><code class=" language-js"><span class="token keyword">function</span> <span class="token function">logTabs</span><span class="token punctuation">(</span><span class="token parameter">tabs</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// tabs[0].url requires the `tabs` permission</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>tabs<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>url<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">onError</span><span class="token punctuation">(</span><span class="token parameter">error</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Error: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>error<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">let</span> querying <span class="token operator">=</span> browser<span class="token punctuation">.</span>tabs<span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span><span class="token punctuation">{</span>currentWindow<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> active<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+querying<span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>logTabs<span class="token punctuation">,</span> onError<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>Get tabs for all HTTP and HTTPS URLs under <code>"mozilla.org"</code> or any of its subdomains:</p>
+
+<pre class="brush: js notranslate line-numbers language-js"><code class=" language-js"><span class="token keyword">function</span> <span class="token function">logTabs</span><span class="token punctuation">(</span><span class="token parameter">tabs</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> tab <span class="token keyword">of</span> tabs<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// tab.url requires the `tabs` permission</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>tab<span class="token punctuation">.</span>url<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">onError</span><span class="token punctuation">(</span><span class="token parameter">error</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Error: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>error<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">let</span> querying <span class="token operator">=</span> browser<span class="token punctuation">.</span>tabs<span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span><span class="token punctuation">{</span>url<span class="token punctuation">:</span> <span class="token string">"*://*.mozilla.org/*"</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+querying<span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>logTabs<span class="token punctuation">,</span> onError<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="Example_extensions" class="highlight-spanned"><span class="highlight-span">Example extensions</span><a class="local-anchor" href="https://wiki.developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/query#Example_extensions" data-heading-id="Example_extensions"><svg class="icon icon-link" version="1.1" width="24" height="28" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"></path></svg><span>Section</span></a></h3><ul><li><a class="external external-icon" href="https://github.com/mdn/webextensions-examples/tree/master/annotate-page" rel="noopener">annotate-page</a></li><li><a class="external external-icon" href="https://github.com/mdn/webextensions-examples/tree/master/apply-css" rel="noopener">apply-css</a></li><li><a class="external external-icon" href="https://github.com/mdn/webextensions-examples/tree/master/beastify" rel="noopener">beastify</a></li><li><a class="external external-icon" href="https://github.com/mdn/webextensions-examples/tree/master/bookmark-it" rel="noopener">bookmark-it</a></li><li><a class="external external-icon" href="https://github.com/mdn/webextensions-examples/tree/master/chill-out" rel="noopener">chill-out</a></li><li><a class="external external-icon" href="https://github.com/mdn/webextensions-examples/tree/master/contextual-identities" rel="noopener">contextual-identities</a></li><li><a class="external external-icon" href="https://github.com/mdn/webextensions-examples/tree/master/cookie-bg-picker" rel="noopener">cookie-bg-picker</a></li><li><a class="external external-icon" href="https://github.com/mdn/webextensions-examples/tree/master/find-across-tabs" rel="noopener">find-across-tabs</a></li><li><a class="external external-icon" href="https://github.com/mdn/webextensions-examples/tree/master/history-deleter" rel="noopener">history-deleter</a></li><li><a class="external external-icon" href="https://github.com/mdn/webextensions-examples/tree/master/imagify" rel="noopener">imagify</a></li><li><a class="external external-icon" href="https://github.com/mdn/webextensions-examples/tree/master/list-cookies" rel="noopener">list-cookies</a></li><li><a class="external external-icon" href="https://github.com/mdn/webextensions-examples/tree/master/session-state" rel="noopener">session-state</a></li><li><a class="external external-icon" href="https://github.com/mdn/webextensions-examples/tree/master/tabs-tabs-tabs" rel="noopener">tabs-tabs-tabs</a></li></ul>
+
+<h2 id="Browser_compatibility">Browser compatibility<a class="local-anchor" href="https://wiki.developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/query#Browser_compatibility" data-heading-id="Browser_compatibility"><svg class="icon icon-link" version="1.1" width="24" height="28" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"></path></svg><span>Section</span></a></h2>
+
+<div class="hidden">The compatibility table on this page is generated from structured data. If you'd like to contribute to the data, please check out <a class="external external-icon" href="https://github.com/mdn/browser-compat-data" rel="noopener">https://github.com/mdn/browser-compat-data</a> and send us a pull request.</div>
+
+<div class="bc-data" id="bcd:webextensions.api.tabs.query"><a class="bc-github-link external external-icon" href="https://github.com/mdn/browser-compat-data" rel="noopener">Update compatibility data on GitHub</a><table class="bc-table bc-table-ext"><thead><tr class="bc-platforms"><td></td><th class="bc-platform-desktop" colspan="5"><span>Desktop</span></th><th class="bc-platform-mobile" colspan="1"><span>Mobile</span></th></tr><tr class="bc-browsers"><td></td><th class="bc-browser-chrome"><span class="bc-head-txt-label bc-head-icon-chrome">Chrome</span></th><th class="bc-browser-edge"><span class="bc-head-txt-label bc-head-icon-edge">Edge</span></th><th class="bc-browser-firefox"><span class="bc-head-txt-label bc-head-icon-firefox">Firefox</span></th><th class="bc-browser-opera"><span class="bc-head-txt-label bc-head-icon-opera">Opera</span></th><th class="bc-browser-safari"><span class="bc-head-txt-label bc-head-icon-safari">Safari</span></th><th class="bc-browser-firefox_android"><span class="bc-head-txt-label bc-head-icon-firefox_android">Firefox for Android</span></th></tr></thead><tbody><tr><th scope="row"><code>query</code></th><td class="bc-supports-yes bc-browser-chrome"><span class="bc-browser-name">Chrome</span><abbr class="bc-level-yes only-icon" title="Full support">
+                <span>Full support</span>
+              </abbr>
+              Yes</td><td class="bc-supports-yes bc-browser-edge bc-has-history" tabindex="0" aria-expanded="false" aria-controls="bc-history-1"><span class="bc-browser-name">Edge</span><abbr class="bc-level-yes only-icon" title="Full support">
+                <span>Full support</span>
+              </abbr>
+              14<div class="bc-icons"><abbr class="only-icon" title="See implementation notes"><span>Notes</span><i class="ic-footnote"></i></abbr> </div><button title="Open implementation notes" class="bc-history-link only-icon" tabindex="-1"><span>Open</span><i class="ic-history" aria-hidden="true"></i></button><section class="bc-history" id="bc-history-1"><dl><dt class="bc-supports-yes bc-supports"><abbr class="bc-level-yes only-icon" title="Full support">
+                <span>Full support</span>
+              </abbr>
+              14<div class="bc-icons"><abbr class="only-icon" title="See implementation notes"><span>Notes</span><i class="ic-footnote"></i></abbr> </div></dt><dd><abbr class="only-icon" title="See implementation notes"><span>Notes</span><i class="ic-footnote"></i></abbr> The <code>panel</code>, <code>app</code>, <code>devtools</code> and <code>popup</code> values for <code>WindowType</code> are not supported.</dd></dl></section></td><td class="bc-supports-yes bc-browser-firefox"><span class="bc-browser-name">Firefox</span><abbr class="bc-level-yes only-icon" title="Full support">
+                <span>Full support</span>
+              </abbr>
+              45</td><td class="bc-supports-yes bc-browser-opera"><span class="bc-browser-name">Opera</span><abbr class="bc-level-yes only-icon" title="Full support">
+                <span>Full support</span>
+              </abbr>
+              Yes</td><td class="bc-supports-yes bc-browser-safari bc-has-history" tabindex="0" aria-expanded="false" aria-controls="bc-history-2"><span class="bc-browser-name">Safari</span><abbr class="bc-level-yes only-icon" title="Full support">
+                <span>Full support</span>
+              </abbr>
+              14<div class="bc-icons"><abbr class="only-icon" title="See implementation notes"><span>Notes</span><i class="ic-footnote"></i></abbr> </div><button title="Open implementation notes" class="bc-history-link only-icon" tabindex="-1"><span>Open</span><i class="ic-history" aria-hidden="true"></i></button><section class="bc-history" id="bc-history-2"><dl><dt class="bc-supports-yes bc-supports"><abbr class="bc-level-yes only-icon" title="Full support">
+                <span>Full support</span>
+              </abbr>
+              14<div class="bc-icons"><abbr class="only-icon" title="See implementation notes"><span>Notes</span><i class="ic-footnote"></i></abbr> </div></dt><dd><abbr class="only-icon" title="See implementation notes"><span>Notes</span><i class="ic-footnote"></i></abbr> Pattern matching supports <code>*</code> and <code>?</code>.</dd></dl></section></td><td class="bc-supports-yes bc-browser-firefox_android"><span class="bc-browser-name">Firefox Android</span><abbr class="bc-level-yes only-icon" title="Full support">
+                <span>Full support</span>
+              </abbr>
+              54</td></tr></tbody></table><section class="bc-legend" id="sect3"><h3 class="offscreen highlight-spanned" id="Legend"><span class="highlight-span">Legend</span></h3><dl><dt><span class="bc-supports-yes bc-supports">
+                <abbr class="bc-level bc-level-yes only-icon" title="Full support">
+                 <span>Full support</span>
+                 &nbsp;
+                </abbr></span></dt><dd>Full support</dd><dt><abbr class="only-icon" title="See implementation notes."><span>See implementation notes.</span><i class="ic-footnote"></i></abbr></dt><dd>See implementation notes.</dd></dl></section></div>
+
+<div class="note"><strong>Acknowledgements</strong>
+
+<p>This API is based on Chromium's <a class="external external-icon" href="https://developer.chrome.com/extensions/tabs#method-query" rel="noopener"><code>chrome.tabs</code></a> API. This documentation is derived from <a class="external external-icon" href="https://chromium.googlesource.com/chromium/src/+/master/chrome/common/extensions/api/tabs.json" rel="noopener"><code>tabs.json</code></a> in the Chromium code.</p>
+
+<p>Microsoft Edge compatibility data is supplied by Microsoft Corporation and is included here under the Creative Commons Attribution 3.0 United States License.</p>
+</div>
+
+<div class="hidden">
+<pre class="notranslate line-numbers language-html"><code class=" language-html">// Copyright 2015 The Chromium Authors. All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are
+// met:
+//
+//    * Redistributions of source code must retain the above copyright
+// notice, this list of conditions and the following disclaimer.
+//    * Redistributions in binary form must reproduce the above
+// copyright notice, this list of conditions and the following disclaimer
+// in the documentation and/or other materials provided with the
+// distribution.
+//    * Neither the name of Google Inc. nor the names of its
+// contributors may be used to endorse or promote products derived from
+// this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</div>
+                  
+                
+              </article>
+
+              <!-- contributors -->
+              <div class="wiki-block contributors">
+                <h2 class="offscreen">Document Tags and Contributors</h2>
+                
+                
+  <div class="tag-attach-list contributors-sub">
+    <svg class="icon icon-tags" xmlns="http://www.w3.org/2000/svg" width="30" height="28" viewBox="0 0 30 28" aria-hidden="true">
+    <path d="M7 7c0-1.109-.891-2-2-2s-2 .891-2 2 .891 2 2 2 2-.891 2-2zm16.672 9c0 .531-.219 1.047-.578 1.406l-7.672 7.688c-.375.359-.891.578-1.422.578s-1.047-.219-1.406-.578L1.422 13.906C.625 13.125 0 11.609 0 10.5V4c0-1.094.906-2 2-2h6.5c1.109 0 2.625.625 3.422 1.422l11.172 11.156c.359.375.578.891.578 1.422zm6 0c0 .531-.219 1.047-.578 1.406l-7.672 7.688a2.08 2.08 0 0 1-1.422.578c-.812 0-1.219-.375-1.75-.922l7.344-7.344c.359-.359.578-.875.578-1.406s-.219-1.047-.578-1.422L14.422 3.422C13.625 2.625 12.11 2 11 2h3.5c1.109 0 2.625.625 3.422 1.422l11.172 11.156c.359.375.578.891.578 1.422z"></path>
+</svg>
+    <strong>Tags:</strong>&nbsp;
+    <ul class="tags tags-small">
+      
+        <li><a href="/en-US/docs/tag/Add-ons" rel="nofollow">Add-ons</a></li>
+      
+        <li><a href="/en-US/docs/tag/API" rel="nofollow">API</a></li>
+      
+        <li><a href="/en-US/docs/tag/Extensions" rel="nofollow">Extensions</a></li>
+      
+        <li><a href="/en-US/docs/tag/Method" rel="nofollow">Method</a></li>
+      
+        <li><a href="/en-US/docs/tag/Non-standard" rel="nofollow">Non-standard</a></li>
+      
+        <li><a href="/en-US/docs/tag/query" rel="nofollow">query</a></li>
+      
+        <li><a href="/en-US/docs/tag/Reference" rel="nofollow">Reference</a></li>
+      
+        <li><a href="/en-US/docs/tag/tabs" rel="nofollow">tabs</a></li>
+      
+        <li><a href="/en-US/docs/tag/WebExtensions" rel="nofollow">WebExtensions</a></li>
+      
+    </ul>
+  </div>
+
+
+                
+                  <div class="contributors-sub">
+                    <svg class="icon icon-group" xmlns="http://www.w3.org/2000/svg" width="30" height="28" viewBox="0 0 30 28" aria-hidden="true">
+    <path d="M9.266 14a5.532 5.532 0 0 0-4.141 2H3.031C1.468 16 0 15.25 0 13.516 0 12.25-.047 8 1.937 8c.328 0 1.953 1.328 4.062 1.328.719 0 1.406-.125 2.078-.359A7.624 7.624 0 0 0 7.999 10c0 1.422.453 2.828 1.266 4zM26 23.953C26 26.484 24.328 28 21.828 28H8.172C5.672 28 4 26.484 4 23.953 4 20.422 4.828 15 9.406 15c.531 0 2.469 2.172 5.594 2.172S20.063 15 20.594 15C25.172 15 26 20.422 26 23.953zM10 4c0 2.203-1.797 4-4 4S2 6.203 2 4s1.797-4 4-4 4 1.797 4 4zm11 6c0 3.313-2.688 6-6 6s-6-2.688-6-6 2.688-6 6-6 6 2.688 6 6zm9 3.516C30 15.25 28.531 16 26.969 16h-2.094a5.532 5.532 0 0 0-4.141-2A7.066 7.066 0 0 0 22 10a7.6 7.6 0 0 0-.078-1.031A6.258 6.258 0 0 0 24 9.328C26.109 9.328 27.734 8 28.062 8c1.984 0 1.937 4.25 1.937 5.516zM28 4c0 2.203-1.797 4-4 4s-4-1.797-4-4 1.797-4 4-4 4 1.797 4 4z"></path>
+</svg>
+                    <strong>Contributors to this page:</strong>
+                    
+        <a href="/en-US/profiles/kernp" rel="nofollow">kernp</a>, 
+    
+        <a href="/en-US/profiles/tregagnon" rel="nofollow">tregagnon</a>, 
+    
+        <a href="/en-US/profiles/Zearin_Galaurum" rel="nofollow">Zearin_Galaurum</a>, 
+    
+        <a href="/en-US/profiles/mdnwebdocs-bot" rel="nofollow">mdnwebdocs-bot</a>, 
+    
+        <a href="/en-US/profiles/irenesmith" rel="nofollow">irenesmith</a>, 
+    
+        <a href="/en-US/profiles/fscholz" rel="nofollow">fscholz</a>, 
+    
+        <a href="/en-US/profiles/antonva" rel="nofollow">antonva</a>, 
+    
+        <a href="/en-US/profiles/quassy" rel="nofollow">quassy</a>, 
+    
+        <a href="/en-US/profiles/wbamberg" rel="nofollow">wbamberg</a>, 
+    
+        <a href="/en-US/profiles/nicoabie" rel="nofollow">nicoabie</a>, 
+    
+        <a href="/en-US/profiles/JeffersonScher" rel="nofollow">JeffersonScher</a>, 
+    
+        <a href="/en-US/profiles/andrewtruongmoz" rel="nofollow">andrewtruongmoz</a>, 
+    
+        <a href="/en-US/profiles/snoack" rel="nofollow">snoack</a>, 
+    
+        <a href="/en-US/profiles/serv-inc" rel="nofollow">serv-inc</a>, 
+    
+        <a href="/en-US/profiles/craue" rel="nofollow">craue</a>, 
+    
+        <a href="/en-US/profiles/Makyen" rel="nofollow">Makyen</a>, 
+    
+        <a href="/en-US/profiles/baku" rel="nofollow">baku</a>, 
+    
+        <a href="/en-US/profiles/Jeremie" rel="nofollow">Jeremie</a>
+    
+                  </div>
+                
+
+                
+                  <div class="contributors-sub">
+                    <svg class="icon icon-clock" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 28" aria-hidden="true">
+    <path d="M14 8.5v7c0 .281-.219.5-.5.5h-5a.494.494 0 0 1-.5-.5v-1c0-.281.219-.5.5-.5H12V8.5c0-.281.219-.5.5-.5h1c.281 0 .5.219.5.5zm6.5 5.5c0-4.688-3.813-8.5-8.5-8.5S3.5 9.313 3.5 14s3.813 8.5 8.5 8.5 8.5-3.813 8.5-8.5zm3.5 0c0 6.625-5.375 12-12 12S0 20.625 0 14 5.375 2 12 2s12 5.375 12 12z"></path>
+</svg>
+                    <strong>Last updated by:</strong>
+                    <a href="/en-US/profiles/kernp" rel="nofollow">kernp</a>,
+                    <time datetime="2020-04-03T15:58:33.842242-07:00">Apr 3, 2020, 3:58:33 PM</time>
+                  </div>
+                
+              </div>
+            </div>
+
+            
+              <!-- quick links and approvals strip -->
+              <div id="wiki-left" class="column-strip wiki-column">
+
+                <!-- crumbs -->
+                
+  
+    <nav class="crumbs" role="navigation">
+      <ol typeof="BreadcrumbList" vocab="https://schema.org/" aria-label="breadcrumbs">
+        
+          <li property="itemListElement" typeof="ListItem" class="crumb">
+            <a href="/en-US/docs/Mozilla" property="item" typeof="WebPage">
+              <span property="name">Mozilla</span>
+            </a>
+            <meta property="position" content="1">
+          </li>
+        
+          <li property="itemListElement" typeof="ListItem" class="crumb">
+            <a href="/en-US/docs/Mozilla/Add-ons" property="item" typeof="WebPage">
+              <span property="name">Add-ons</span>
+            </a>
+            <meta property="position" content="2">
+          </li>
+        
+          <li property="itemListElement" typeof="ListItem" class="crumb">
+            <a href="/en-US/docs/Mozilla/Add-ons/WebExtensions" property="item" typeof="WebPage">
+              <span property="name">Browser Extensions</span>
+            </a>
+            <meta property="position" content="3">
+          </li>
+        
+          <li property="itemListElement" typeof="ListItem" class="crumb">
+            <a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API" property="item" typeof="WebPage">
+              <span property="name">JavaScript APIs</span>
+            </a>
+            <meta property="position" content="4">
+          </li>
+        
+          <li property="itemListElement" typeof="ListItem" class="crumb">
+            <a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs" property="item" typeof="WebPage">
+              <span property="name">tabs</span>
+            </a>
+            <meta property="position" content="5">
+          </li>
+        
+        <li property="itemListElement" typeof="ListItem" class="crumb">
+          <a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/query" class="crumb-current-page" property="item" typeof="WebPage">
+            <span property="name" aria-current="page">tabs.query()</span>
+          </a>
+          <meta property="position" content="6">
+        </li>
+      </ol>
+    </nav>
+  
+
+                
+                  <!-- quick links -->
+                  
+  <div class="quick-links" id="quick-links">
+    <div class="quick-links-head">Related Topics</div>
+    
+  <ol>
+    <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions"><strong>Browser extensions</strong></a></li>
+    <li class="toggle">
+      <details>
+        <summary>Getting started</summary>
+        <ol>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/What_are_WebExtensions">What are extensions?</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension">Your first extension</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_second_WebExtension">Your second extension</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Anatomy_of_a_WebExtension">Anatomy of an extension</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Examples">Example extensions</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/What_next_">What next?</a></li>
+        </ol>
+      </details>
+    </li>
+    <li class="toggle">
+      <details>
+        <summary>Concepts</summary>
+        <ol>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Using_the_JavaScript_APIs">Using the JavaScript APIs</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Content_scripts">Content scripts</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Match_patterns">Match patterns</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Working_with_files">Working with files</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Internationalization">Internationalization</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Content_Security_Policy">Content Security Policy</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Native_messaging">Native messaging</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Differences_between_API_implementations">Differences between API implementations</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Chrome_incompatibilities">Chrome incompatibilities</a></li>
+        </ol>
+      </details>
+    </li>
+    <li class="toggle">
+      <details>
+        <summary>User interface</summary>
+        <ol>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface">User Interface</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Browser_action">Toolbar button</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Page_actions">Address bar button</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Sidebars">Sidebars</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Context_menu_items">Context menu items</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Options_pages">Options page</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Extension_pages">Extension pages</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Notifications">Notifications</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Omnibox">Address bar suggestions</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/devtools_panels">Developer tools panels</a></li>
+        </ol>
+      </details>
+    </li>
+    <li class="toggle">
+      <details>
+        <summary>How to</summary>
+        <ol>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Intercept_HTTP_requests">Intercept HTTP requests</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Modify_a_web_page">Modify a web page</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Safely_inserting_external_content_into_a_page">Insert external content</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Sharing_objects_with_page_scripts">Share objects with page scripts</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Add_a_button_to_the_toolbar">Add a button to the toolbar</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Implement_a_settings_page">Implement a settings page</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Working_with_the_Tabs_API">Work with the Tabs API</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Work_with_the_Bookmarks_API">Work with the Bookmarks API</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Work_with_the_Cookies_API">Work with the Cookies API</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Work_with_contextual_identities">Work with contextual identities</a></li>
+          <li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Build_a_cross_browser_extension">Build a cross-browser extension</a></li>
+        </ol>
+      </details>
+    </li>
+    <li class="toggle">
+      <details>
+        <summary><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Firefox_differentiators">Firefox differentiators</a></summary>
+      </details>
+    </li>
+    <li class="toggle">
+      <details open="">
+        <summary>JavaScript APIs</summary>
+        <ol><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Browser_support_for_JavaScript_APIs">Browser support for JavaScript APIs</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/alarms">alarms</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/bookmarks">bookmarks</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/browserAction">browserAction</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/browserSettings">browserSettings</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/browsingData">browsingData</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/captivePortal">captivePortal</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/clipboard">clipboard</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/commands">commands</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/contentScripts">contentScripts</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/contextualIdentities">contextualIdentities</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/cookies">cookies</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/devtools">devtools</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/devtools.inspectedWindow">devtools.inspectedWindow</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/devtools.network">devtools.network</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/devtools.panels">devtools.panels</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/dns">dns</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/downloads">downloads</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/events">events</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/extension">extension</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/extensionTypes">extensionTypes</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/find">find</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/history">history</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/i18n">i18n</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/identity">identity</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/idle">idle</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/management">management</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/menus">menus</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/notifications">notifications</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/omnibox">omnibox</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/pageAction">pageAction</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/permissions">permissions</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/pkcs11">pkcs11</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/privacy">privacy</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/proxy">proxy</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/runtime">runtime</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/search">search</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/sessions">sessions</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/sidebarAction">sidebarAction</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage">storage</a></li><li class="webextension-api-sidebar"><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs">tabs</a><ol><li data-default-state="open"><a href="#"><strong>Methods</strong></a><ol><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/captureTab" title="Creates a data URI encoding an image of the visible area of the given tab. You must have the <all_urls> permission to use this method."><code>captureTab()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/captureVisibleTab" title="Creates a data URI encoding an image of the visible area of the currently active tab in the specified window. You must have the <all_urls> permission to use this method. (Alternately, Chrome allows use of this method with the activeTab permission and a qualifying user gesture)."><code>captureVisibleTab()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/connect" title="Call this function to set up a connection between the extension's background scripts (or other privileged scripts, such as popup scripts or options page scripts) and any content scripts that belong to this extension and are running in the specified tab. This function returns a runtime.Port object."><code>connect()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/create" title="Creates a new tab."><code>create()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/detectLanguage" title="Detects the primary language of the content in a tab, using the Compact Language Detector (CLD)."><code>detectLanguage()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/discard" title="Discards one or more tabs."><code>discard()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/duplicate" title="Duplicates a tab, given its ID."><code>duplicate()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/executeScript" title="Injects JavaScript code into a page."><code>executeScript()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/get" title="Given a tab ID, get the tab's details as a tabs.Tab object."><code>get()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/getAllInWindow" title="Gets details about all tabs in the specified window."><code>getAllInWindow()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/getCurrent" title="Get&nbsp;a tabs.Tab containing information about the tab that this script is running in."><code>getCurrent()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/getSelected" title="Gets the tab that is selected in the specified window."><code>getSelected()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/getZoom" title="Gets the current zoom factor for the specified tab."><code>getZoom()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/getZoomSettings" title="Gets the current zoom settings for a specified tab."><code>getZoomSettings()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/goBack" title="Navigate to the previous page in tab's history, if available."><code>goBack()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/goForward" title="Navigate to the next page in tab's history, if available."><code>goForward()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/hide" title="Hides one or more tabs."><code>hide()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/highlight" title="A Promise that will be fulfilled with a&nbsp;windows.Window object containing details about the window whose tabs were highlighted. If the window could not be found or some other error occurs, the promise will be rejected with an error message."><code>highlight()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/insertCSS" title="Injects CSS into a page."><code>insertCSS()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/move" title="Moves one or more tabs to a new position in the same window or to a different window."><code>move()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/moveInSuccession" title="Modifies the succession relationship for a group of tabs."><code>moveInSuccession()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/print" title="Call this function to print the contents of the active tab. If this function is called, the user will be presented with the print dialog from the underlying platform, and will have the chance to change the print settings and then print the currently active tab."><code>print()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/printPreview" title="None."><code>printPreview()</code></a></li><li><em><code>query()</code></em></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/reload" title="Reload a tab, optionally bypassing the local web cache."><code>reload()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/remove" title="Closes one or more tabs."><code>remove()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/removeCSS" title="Removes from a page CSS which was previously injected by a call to tabs.insertCSS()."><code>removeCSS()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/saveAsPDF" title="Saves the current page as a PDF file. This will open a dialog, supplied by the underlying operating system, asking the user where they want to save the PDF file."><code>saveAsPDF()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/sendMessage" title="Sends a single message from the extension's background scripts (or other privileged scripts, such as popup scripts or options page scripts) to any content scripts or extension pages/iframes that belong to the extension and are running in the specified tab."><code>sendMessage()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/sendRequest" title="Sends a single request to the content script(s) in the specified tab, with an optional callback to run when a response is sent back. The extension.onRequest event is fired in each content script running in the specified tab for the current extension."><code>sendRequest()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/setZoom" title="Zooms the specified tab."><code>setZoom()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/setZoomSettings" title="Sets zoom settings for the specified tab. These settings are reset to the default settings upon navigating the tab."><code>setZoomSettings()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/show" title="Shows one or more tabs that were previously hidden by a call to tabs.hide."><code>show()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/toggleReaderMode" title="Toggles Reader Mode for the given tab."><code>toggleReaderMode()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/update" title="Navigate the tab to a new URL, or modify other properties of the tab."><code>update()</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/warmup" title="To optimize system resource usage, browsers may drop GPU resources associated with tabs that the user has not accessed for a certain amount of time. If a browser has done this for a tab, then reactivating the tab (for example, when the user switches to it) may take longer than it normally would."><code>warmup()</code></a></li></ol></li><li data-default-state="open"><a href="#"><strong>Properties</strong></a><ol><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/TAB_ID_NONE" title="A special ID value given to tabs that are not browser tabs (for example, tabs in devtools windows)."><code>TAB_ID_NONE</code></a></li></ol></li><li data-default-state="open"><a href="#"><strong>Types</strong></a><ol><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/MutedInfo" title="This object contains a boolean indicating whether the tab is muted, and the reason for the last state change."><code>MutedInfo</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/MutedInfoReason" title="Specifies the reason a tab was muted or unmuted."><code>MutedInfoReason</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/PageSettings" title="The type tabs.PageSettings is used to control how a tab is rendered as a PDF by the tabs.saveAsPDF() method."><code>PageSettings</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/Tab" title="The type tabs.Tab contains information about a tab. This provides access to information about what content is in the tab, how large the content is, what special states or restrictions are in effect, and so forth."><code>Tab</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/TabStatus" title="Indicates whether the tab has finished loading."><code>TabStatus</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/WindowType" title="The type of window that hosts this tab."><code>WindowType</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/ZoomSettings" title="Defines zoom settings for a tab: mode,&nbsp;scope, and default zoom factor."><code>ZoomSettings</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/ZoomSettingsMode" title="Defines how zoom changes are handled. Extensions can pass this value into tabs.setZoomSettings() to control how the browser handles attempts to change zoom settings for a tab. Defaults to &quot;automatic&quot;."><code>ZoomSettingsMode</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/ZoomSettingsScope" title="Defines whether zoom changes will persist for the page's origin, or only take effect in this tab. This defaults to per-origin when tabs.zoomSettingsMode is &quot;automatic&quot;, and is always per-tab otherwise."><code>ZoomSettingsScope</code></a></li></ol></li><li data-default-state="open"><a href="#"><strong>Events</strong></a><ol><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/onActivated" title="Fires when the active tab in a window changes. Note that the tab's URL may not be set at the time this event fired, but you can listen to tabs.onUpdated events to be notified when a URL is set."><code>onActivated</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/onActiveChanged" title="Fires when the selected tab in a window changes. Note that the tab's URL may not be set at the time this event fired, but you can listen to tabs.onUpdated events to be notified when a URL is set."><code>onActiveChanged</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/onAttached" title="Fired when a tab is attached to a window, for example because it was moved between windows."><code>onAttached</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/onCreated" title="Fired when a tab is created."><code>onCreated</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/onDetached" title="Fired when a tab is detached from a window, for example because it is being moved between windows."><code>onDetached</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/onHighlightChanged" title="Fired when the highlighted or selected tabs in a window changes."><code>onHighlightChanged</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/onHighlighted" title="Fired when the set of highlighted tabs in a window changes."><code>onHighlighted</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/onMoved" title="Fired when a tab is moved within a window."><code>onMoved</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/onRemoved" title="Fired when a tab is closed."><code>onRemoved</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/onReplaced" title="Fired when a tab is replaced with another tab due to prerendering or instant."><code>onReplaced</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/onSelectionChanged" title="Fires when the selected tab in a window changes."><code>onSelectionChanged</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/onUpdated" title="Fired when a tab is updated."><code>onUpdated</code></a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/onZoomChange" title="Fired when a tab is zoomed."><code>onZoomChange</code></a></li></ol></li></ol></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/theme">theme</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/topSites">topSites</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/types">types</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/userScripts">userScripts</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webNavigation">webNavigation</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest">webRequest</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/windows">windows</a></li></ol>
+      </details>
+    </li>
+    <li class="toggle">
+      <details>
+      <summary>Manifest keys</summary>
+      <ol><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/author">author</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/background">background</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/browser_action">browser_action</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/browser_specific_settings">browser_specific_settings</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/chrome_settings_overrides">chrome_settings_overrides</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/chrome_url_overrides">chrome_url_overrides</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/commands">commands</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/content_scripts">content_scripts</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/content_security_policy">content_security_policy</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/default_locale">default_locale</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/description">description</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/developer">developer</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/devtools_page">devtools_page</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/dictionaries">dictionaries</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/externally_connectable">externally_connectable</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/homepage_url">homepage_url</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/icons">icons</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/incognito">incognito</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/manifest_version">manifest_version</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/name">name</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/offline_enabled">offline_enabled</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/omnibox">omnibox</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/optional_permissions">optional_permissions</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/options_page">options_page</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/options_ui">options_ui</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/page_action">page_action</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions">permissions</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/protocol_handlers">protocol_handlers</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/short_name">short_name</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/sidebar_action">sidebar_action</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/storage">storage</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/theme">theme</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/theme_experiment">theme_experiment</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/user_scripts">user_scripts</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/version">version</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/version_name">version_name</a></li><li><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/web_accessible_resources">web_accessible_resources</a></li></ol>
+      </details>
+    </li>
+     <li class="toggle">
+      <details>
+        <summary>Extension Workshop</summary>
+        <ol>
+          <li><a class="external external-icon" href="https://extensionworkshop.com/documentation/develop/" rel="noopener">Develop</a></li>
+          <li><a class="external external-icon" href="https://extensionworkshop.com/documentation/publish/" rel="noopener">Publish</a></li>
+          <li><a class="external external-icon" href="https://extensionworkshop.com/documentation/manage/" rel="noopener">Manage</a></li>
+          <li><a class="external external-icon" href="https://extensionworkshop.com/documentation/enterprise/" rel="noopener">Enterprise</a></li>
+        </ol>
+      </details>
+    </li>
+    <li><a href="/en-US/docs/Mozilla/Add-ons/Contact_us"><strong>Contact us</strong></a></li>
+    <li class="toggle">
+      <details>
+        <summary>Channels</summary>
+        <ol>
+          <li><a class="external external-icon" href="https://blog.mozilla.org/addons" rel="noopener">Add-ons blog</a></li>
+          <li><a class="external external-icon" href="https://discourse.mozilla.org/c/add-ons" rel="noopener">Add-ons forum</a></li>
+          <li><a class="external external-icon" href="https://chat.mozilla.org/#/room/%23addons:mozilla.org" rel="noopener">Add-ons chat</a></li>
+        </ol>
+      </details>
+    </li>
+  </ol>
+
+  </div>
+                
+
+                <!-- approvals -->
+                
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div> <!-- ends "main-content" -->
+
+    
+      <div class="newsletter-box">
+        <div class="newsletter">
+    <form id="newsletterForm" class="newsletter-form nodisable" name="newsletter-form" action="https://www.mozilla.org/en-US/newsletter/" method="post">
+        <div class="newsletter-head">
+            <h2 class="newsletter-teaser">Learn the best of web development</h2>
+            <p class="newsletter-description">Get the latest and greatest from MDN delivered straight to your inbox.</p>
+            
+        </div>
+
+        <div class="newsletter-fields">
+            <input type="hidden" id="fmt" name="fmt" value="H">
+            <input type="hidden" id="newsletterNewslettersInput" name="newsletters" value="app-dev">
+            <div id="newsletterErrors" class="newsletter-errors"></div>
+
+            <div id="newsletterEmail" class="form-group newsletter-group-email">
+                <label for="newsletterEmailInput" class="form-label offscreen">E-mail</label>
+                <input type="email" id="newsletterEmailInput" name="email" class="form-input newsletter-input-email" required="" placeholder="you@example.com" size="30">
+            </div>
+
+            <div id="newsletterPrivacy" class="form-group form-group-agree newsletter-group-privacy hidden">
+                <input type="checkbox" id="newsletterPrivacyInput" name="privacy" required="">
+                <label for="newsletterPrivacyInput">
+                I'm okay with Mozilla handling my info as explained in this <a href="https://www.mozilla.org/privacy/">Privacy Policy</a>.
+                </label>
+            </div>
+            <div id="newsletterSubmit" class="newsletter-group-submit">
+                <button id="newsletter-submit" type="submit" class="button newsletter-submit">
+                    Sign up now<svg class="icon icon-arrow" xmlns="http://www.w3.org/2000/svg" width="23" height="28" viewBox="0 0 23 28" aria-hidden="true">
+    <path d="M23 15a2.01 2.01 0 0 1-.578 1.422L12.25 26.594c-.375.359-.891.578-1.422.578s-1.031-.219-1.406-.578L8.25 25.422c-.375-.375-.594-.891-.594-1.422s.219-1.047.594-1.422L12.828 18h-11C.703 18 0 17.062 0 16v-2c0-1.062.703-2 1.828-2h11L8.25 7.406a1.96 1.96 0 0 1 0-2.812l1.172-1.172c.375-.375.875-.594 1.406-.594s1.047.219 1.422.594l10.172 10.172c.375.359.578.875.578 1.406z"></path>
+</svg>
+                </button>
+            </div>
+        </div>
+    </form>
+    <div id="newsletterThanks" class="newsletter-thanks hidden">
+        <h2>Thanks! Please check your inbox to confirm your subscription.</h2>
+        <p>If you haven’t previously confirmed a subscription to a Mozilla-related newsletter you may have to do so. Please check your inbox or your spam filter for an email from us.
+        </p>
+    </div>
+    <button id="newsletterHide" type="button" class="only-icon newsletter-hide">
+        <span>Hide Newsletter Sign-up</span>
+        <svg class="icon icon-close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" role="img"><title></title><path d="M18.3 5.71a.996.996 0 00-1.41 0L12 10.59 7.11 5.7A.996.996 0 105.7 7.11L10.59 12 5.7 16.89a.996.996 0 101.41 1.41L12 13.41l4.89 4.89a.996.996 0 101.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4z" fill-rule="nonzero"></path></svg>
+    </button>
+</div>
+      </div>
+    
+
+  <menu type="context" id="edit-history-menu">
+    <menuitem data-action="/en-US/users/signin?next=/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/query%24edit" label="Edit page"></menuitem>
+    <menuitem data-action="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/query$history" label="View page history"></menuitem>
+  </menu>
+
+      </div>
+  </main>
+        <div id="developer_needs" class="mdn-cta-container hidden" aria-expanded="false" aria-hidden="true" data-banner="developer_needs">
+    <div id="mdn-cta-content" class="mdn-cta-content cta-background-linear"><div id="developer-needs" class="mdn-cta-content-container">
+    <h2 class="mdn-cta-title slab-text">
+        MDN Survey
+    </h2>
+    <p class="mdn-cta-copy">
+        Help us understand the top 10 needs of Web developers and
+        designers.
+    </p>
+</div>
+<p class="mdn-cta-button-container">
+    <a href="https://qsurvey.mozilla.com/s3/Developer-Needs-Assessment-2019" class="mdn-cta-button" target="_blank" rel="noopener">Take the survey</a>
+</p>
+    </div>
+    <div class="mdn-cta-controls">
+        <button type="button" id="mdn-cta-collapse" class="mdn-cta-collapse hide-collapse" aria-labelledby="mdn-cta-minimize-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-chevron-down" width="26" height="26" aria-hidden="true"><title id="mdn-cta-minimize-icon">Minimize
+            banner</title><g fill-rule="nonzero" fill="none"><circle fill="#222" cx="13" cy="13" r="13"></circle><path d="M13.544 17.31l6.23-6.16c.301-.297.301-.778 0-1.075l-.726-.719a.776.776 0 0 0-1.087-.001L13 14.237 8.039 9.355a.776.776 0 0 0-1.087.001l-.727.719c-.3.297-.3.778 0 1.075l6.23 6.16c.301.298.789.298 1.09 0z" fill="#FFF"></path></g></svg>
+        </button>
+        <button type="button" id="mdn-cta-close" class="mdn-cta-close" aria-labelledby="mdn-cta-close-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-close" viewBox="0 0 24 24" aria-hidden="true" role="img"><title id="mdn-cta-close-icon">Close
+            banner</title><path d="M18.3 5.71a.996.996 0 00-1.41 0L12 10.59 7.11 5.7A.996.996 0 105.7 7.11L10.59 12 5.7 16.89a.996.996 0 101.41 1.41L12 13.41l4.89 4.89a.996.996 0 101.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4z" fill-rule="nonzero"></path></svg>
+        </button>
+    </div>
+</div>
+    
+  <!-- Footer -->
+    <footer id="nav-footer" class="nav-footer">
+      <div class="center">
+          <a href="/en-US/" class="nav-footer-logo">MDN Web Docs</a>
+<div class="footer-group footer-group-mdn">
+  <h2 class="footer-title">MDN</h2>
+  <ul class="footer-list">
+    <li><a href="/en-US/docs/Web">Web Technologies</a></li>
+    <li><a href="/en-US/docs/Learn">Learn Web Development</a></li>
+    <li><a href="/docs/MDN/About">About MDN</a></li>
+    <li><a href="/en-US/docs/MDN/Feedback">Feedback</a></li>
+    <li class="footer-social">
+        <a href="https://twitter.com/mozdevnet">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-twitter" width="26" height="28" viewBox="0 0 26 28" aria-label="Twitter" role="img" focusable="false">
+    <title>Twitter</title>
+    <path d="M25.312 6.375a10.85 10.85 0 0 1-2.531 2.609c.016.219.016.438.016.656 0 6.672-5.078 14.359-14.359 14.359-2.859 0-5.516-.828-7.75-2.266.406.047.797.063 1.219.063 2.359 0 4.531-.797 6.266-2.156a5.056 5.056 0 0 1-4.719-3.5c.313.047.625.078.953.078.453 0 .906-.063 1.328-.172a5.048 5.048 0 0 1-4.047-4.953v-.063a5.093 5.093 0 0 0 2.281.641 5.044 5.044 0 0 1-2.25-4.203c0-.938.25-1.797.688-2.547a14.344 14.344 0 0 0 10.406 5.281 5.708 5.708 0 0 1-.125-1.156 5.045 5.045 0 0 1 5.047-5.047 5.03 5.03 0 0 1 3.687 1.594 9.943 9.943 0 0 0 3.203-1.219 5.032 5.032 0 0 1-2.219 2.781c1.016-.109 2-.391 2.906-.781z"></path>
+</svg>
+        </a>
+    </li>
+    <li class="footer-social">
+        <a href="https://github.com/mdn/">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-github" width="24" height="28" viewBox="0 0 24 28" aria-label="GitHub" role="img" focusable="false">
+    <title>GitHub</title>
+    <path d="M12 2c6.625 0 12 5.375 12 12 0 5.297-3.437 9.797-8.203 11.391-.609.109-.828-.266-.828-.578 0-.391.016-1.687.016-3.297 0-1.125-.375-1.844-.812-2.219 2.672-.297 5.484-1.313 5.484-5.922 0-1.313-.469-2.375-1.234-3.219.125-.313.531-1.531-.125-3.187-1-.313-3.297 1.234-3.297 1.234a11.28 11.28 0 0 0-6 0S6.704 6.656 5.704 6.969c-.656 1.656-.25 2.875-.125 3.187-.766.844-1.234 1.906-1.234 3.219 0 4.594 2.797 5.625 5.469 5.922-.344.313-.656.844-.766 1.609-.688.313-2.438.844-3.484-1-.656-1.141-1.844-1.234-1.844-1.234-1.172-.016-.078.734-.078.734.781.359 1.328 1.75 1.328 1.75.703 2.141 4.047 1.422 4.047 1.422 0 1 .016 1.937.016 2.234 0 .313-.219.688-.828.578C3.439 23.796.002 19.296.002 13.999c0-6.625 5.375-12 12-12zM4.547 19.234c.031-.063-.016-.141-.109-.187-.094-.031-.172-.016-.203.031-.031.063.016.141.109.187.078.047.172.031.203-.031zm.484.532c.063-.047.047-.156-.031-.25-.078-.078-.187-.109-.25-.047-.063.047-.047.156.031.25.078.078.187.109.25.047zm.469.703c.078-.063.078-.187 0-.297-.063-.109-.187-.156-.266-.094-.078.047-.078.172 0 .281s.203.156.266.109zm.656.656c.063-.063.031-.203-.063-.297-.109-.109-.25-.125-.313-.047-.078.063-.047.203.063.297.109.109.25.125.313.047zm.891.391c.031-.094-.063-.203-.203-.25-.125-.031-.266.016-.297.109s.063.203.203.234c.125.047.266 0 .297-.094zm.984.078c0-.109-.125-.187-.266-.172-.141 0-.25.078-.25.172 0 .109.109.187.266.172.141 0 .25-.078.25-.172zm.906-.156c-.016-.094-.141-.156-.281-.141-.141.031-.234.125-.219.234.016.094.141.156.281.125s.234-.125.219-.219z"></path>
+</svg>
+        </a>
+    </li>
+  </ul>
+</div>
+
+          <a href="https://mozilla.org" class="nav-footer-mozilla">Mozilla</a>
+<div class="footer-group footer-group-mozilla">
+  <h2 class="footer-title">Mozilla</h2>
+  <ul class="footer-list">
+    <li><a href="https://www.mozilla.org/about/">About</a></li>
+    <li><a href="https://shop.spreadshirt.com/mdn-store/">MDN Web Docs Store</a></li>
+    <li><a href="https://www.mozilla.org/contact/">Contact Us</a></li>
+    <li><a href="https://www.mozilla.org/firefox/?utm_source=developer.mozilla.org&amp;utm_campaign=footer&amp;utm_medium=referral">Firefox</a></li>
+    <li class="footer-social">
+        <a href="https://twitter.com/mozilla">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-twitter" width="26" height="28" viewBox="0 0 26 28" aria-label="Twitter" role="img" focusable="false">
+    <title>Twitter</title>
+    <path d="M25.312 6.375a10.85 10.85 0 0 1-2.531 2.609c.016.219.016.438.016.656 0 6.672-5.078 14.359-14.359 14.359-2.859 0-5.516-.828-7.75-2.266.406.047.797.063 1.219.063 2.359 0 4.531-.797 6.266-2.156a5.056 5.056 0 0 1-4.719-3.5c.313.047.625.078.953.078.453 0 .906-.063 1.328-.172a5.048 5.048 0 0 1-4.047-4.953v-.063a5.093 5.093 0 0 0 2.281.641 5.044 5.044 0 0 1-2.25-4.203c0-.938.25-1.797.688-2.547a14.344 14.344 0 0 0 10.406 5.281 5.708 5.708 0 0 1-.125-1.156 5.045 5.045 0 0 1 5.047-5.047 5.03 5.03 0 0 1 3.687 1.594 9.943 9.943 0 0 0 3.203-1.219 5.032 5.032 0 0 1-2.219 2.781c1.016-.109 2-.391 2.906-.781z"></path>
+</svg>
+        </a>
+    </li>
+    <li class="footer-social">
+        <a href="https://www.instagram.com/mozillagram/">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-instagram" width="24" height="28" viewBox="0 0 24 28" aria-label="Instagram" role="img" focusable="false">
+    <title>Instagram</title>
+    <path d="M16 14c0-2.203-1.797-4-4-4s-4 1.797-4 4 1.797 4 4 4 4-1.797 4-4zm2.156 0c0 3.406-2.75 6.156-6.156 6.156S5.844 17.406 5.844 14 8.594 7.844 12 7.844s6.156 2.75 6.156 6.156zm1.688-6.406c0 .797-.641 1.437-1.437 1.437S16.97 8.39 16.97 7.594s.641-1.437 1.437-1.437 1.437.641 1.437 1.437zM12 4.156c-1.75 0-5.5-.141-7.078.484-.547.219-.953.484-1.375.906s-.688.828-.906 1.375c-.625 1.578-.484 5.328-.484 7.078s-.141 5.5.484 7.078c.219.547.484.953.906 1.375s.828.688 1.375.906c1.578.625 5.328.484 7.078.484s5.5.141 7.078-.484c.547-.219.953-.484 1.375-.906s.688-.828.906-1.375c.625-1.578.484-5.328.484-7.078s.141-5.5-.484-7.078c-.219-.547-.484-.953-.906-1.375s-.828-.688-1.375-.906C17.5 4.015 13.75 4.156 12 4.156zM24 14c0 1.656.016 3.297-.078 4.953-.094 1.922-.531 3.625-1.937 5.031s-3.109 1.844-5.031 1.937c-1.656.094-3.297.078-4.953.078s-3.297.016-4.953-.078c-1.922-.094-3.625-.531-5.031-1.937S.173 20.875.08 18.953C-.014 17.297.002 15.656.002 14s-.016-3.297.078-4.953c.094-1.922.531-3.625 1.937-5.031s3.109-1.844 5.031-1.937c1.656-.094 3.297-.078 4.953-.078s3.297-.016 4.953.078c1.922.094 3.625.531 5.031 1.937s1.844 3.109 1.937 5.031C24.016 10.703 24 12.344 24 14z"></path>
+</svg>
+        </a>
+    </li>
+  </ul>
+</div>
+
+          
+  
+    <form class="languages go" method="get" action="/en-US/docs/Web">
+      <label for="language">Other languages:</label>
+      <select id="language" class="wiki-l10n" name="next" dir="ltr">
+        <option title="English (US)" data-locale="en-US" value="/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/query" selected="">
+          English (US) (en-US)
+        </option>
+        
+          <option title="French" data-locale="en-US" value="/fr/docs/Mozilla/Add-ons/WebExtensions/API/tabs/query">
+            Français (fr)
+          </option>
+          <option title="Japanese" data-locale="en-US" value="/ja/docs/Mozilla/Add-ons/WebExtensions/API/tabs/query">
+            日本語 (ja)
+          </option>
+      </select>
+      <noscript><button type="submit">Go</button></noscript>
+    </form>
+  
+
+
+          
+            <ul class="footer-tos">
+              <li><a href="https://www.mozilla.org/about/legal/terms/mozilla">Terms</a></li>
+              <li><a href="https://www.mozilla.org/privacy/websites/">Privacy</a></li>
+              <li><a href="https://www.mozilla.org/privacy/websites/#cookies">Cookies</a></li>
+            </ul>
+
+            <div id="license" class="contentinfo">
+              <p>© 2005-2020 Mozilla and individual contributors.</p> <p>Content is available under <a href="/en-US/docs/MDN/About#Copyrights_and_licenses">these licenses</a>.</p>
+            </div>
+          
+      </div>
+    </footer> 
+
+  <!-- site js -->
+  
+    
+    
+
+    <script src="/static/jsi18n/en-US/javascript.1f2ccb980cff.js"></script>
+    <script type="text/javascript" src="/static/build/js/main.505a4643a12f.js" charset="utf-8"></script>
+    
+  
+    <script type="text/javascript" src="/static/build/js/wiki.eac29b2a9e96.js" charset="utf-8"></script>
+
+
+  
+
+  
+
+  
+
+  
+    <script defer="" type="text/javascript" src="/static/build/js/newsletter.fbbd9c048490.js" charset="utf-8"></script>
+  
+
+  
+
+
+</body>
