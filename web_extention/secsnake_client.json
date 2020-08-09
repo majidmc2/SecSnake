@@ -1,7 +1,0 @@
-{
-  "name": "secsnake_client",
-  "description": "Example host for native messaging",
-  "path": "/home/majidmc2/Desktop/SecSnake/client/secsnake_client.py",
-  "type": "stdio",
-  "allowed_extensions": [ "SecSnake@example.org" ]
-}
