@@ -14,6 +14,6 @@ document.body.style.border = "10px solid blue";
 
 browser.runtime.onMessage.addListener((rule) => {
     if(rule["rule"] === "document")
-        browser.runtime.sendMessage({"data": document.body.outerHTML, "tabURL": rule["tabURL"]});
-        // browser.runtime.sendMessage(document.body.outerHTML);
+        browser.runtime.sendMessage({"data": document.documentElement.outerHTML, "tabURL": rule["tabURL"]});
+        // browser.runtime.sendMessage(document.documentElement.outerHTML);
 });
