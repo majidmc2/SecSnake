@@ -31,57 +31,44 @@
 
 
 var interaction_monitoring = browser.runtime.connectNative("interaction_monitoring");
-var attack_checker = browser.runtime.connectNative("js_attack_checker");
+// var attack_checker = browser.runtime.connectNative("js_attack_checker");
+
+
+function contentScriptOnMeddage(data) {
+    interaction_monitoring.postMessage(data['tabURL'] + "--//*****Split*****//--" + data['data']);  // Send all documents of tabs to 'interaction_monitoring' script 
+    // attack_checker.postMessage(data['tabURL'] + "--//*****Split*****//--" + data['data']);
+}
 
 
 interaction_monitoring.onMessage.addListener((response) => {
 
     function sendAllDocument(){
         function infoTabs(tabs) {
-      
+
+            let tabsLength = 0;
             for (let tab of tabs) {
-                if(String(tab.url).includes("about:debugging") || String(tab.url).includes("about:devtools-toolbox"))
-                    continue
-                browser.tabs.sendMessage(tab.id, {"rule": "document", "tabURL": tab.url});
-                browser.runtime.onMessage.addListener((data) => {
-                    let fileName = String((Math.random() * 10000000000000000000) + 1)
-                    interaction_monitoring.postMessage(fileName + "[[!$AsdTTTT12a3sdVV)))*(888888)+" + data['tabURL'] + "[[!$asdTTTT12a3sdVV)))*(99999)+" + data['data'])
-                    // app.postMessage(data)
-                    attack_checker.postMessage(fileName + "[[!$AsdTTTT12a3sdVV)))*(888888)+" + data['tabURL'])
-                })
+                if (tab.url.startsWith("http") && tab.title !== "Problem loading page")
+                    tabsLength++;                   
             }
+
+            interaction_monitoring.postMessage(tabsLength);  // Send length of Tabs to 'interaction_monitoring' script
+            browser.runtime.onMessage.addListener(contentScriptOnMeddage);  // Add listener for get documents from content-script
+
+            for (let tab of tabs) {
+                if (tab.url.startsWith("http") && tab.title !== "Problem loading page")
+                    browser.tabs.sendMessage(tab.id, {"rule": "document", "tabURL": tab.url});  // Send request for get documents from content-script
+            }
+
         }
 
-        let tabs_query = browser.tabs.query({});
+        let tabs_query = browser.tabs.query({status: "complete"});
         tabs_query.then(infoTabs);
     }
 
-    function chcker(key, value){
-        if(key === "document" && value === true)
-            sendAllDocument();
+    if (response === "start") {
+        sendAllDocument();
     }
-    JSON.parse(response, chcker);
-  
+    else if (response === "stop") {
+        browser.runtime.onMessage.removeListener(contentScriptOnMeddage); // Remove listener for get documents from content-script
+    }
 });
-
-
-// attack_checker.onMessage.addListener((response) => {
-
-//     function chekAllPatterns(){
-//         function infoTabs(tabs) {
-//             for (let tab of tabs) {
-//                 console.log(tab.id)
-//             }
-//         }
-
-//         let tabs_query = browser.tabs.query({});
-//         tabs_query.then(infoTabs);
-//     }
-
-//     function chcker(key, value){
-//         if(key === "check" && value === true)
-//             chekAllPatterns();
-//     }
-//     JSON.parse(response, chcker);
-  
-// });

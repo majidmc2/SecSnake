@@ -145,3 +145,4 @@ static
 logs.txt
 logs.html
 tmp/*
+.idea/
