@@ -1,0 +1,7 @@
+{
+  "name": "pattern_parser",
+  "description": "Pattern parser for parse json config file",
+  "path": "/home/majidmc2/Documents/SecSnake/app/pattern_parser.py",
+  "type": "stdio",
+  "allowed_extensions": [ "{bb3ff054-d96d-11ea-ab75-85908bff670e}" ]
+}

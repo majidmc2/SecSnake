@@ -30,28 +30,22 @@
 // ---------------------------------------------------------------------
 
 
-var interaction_monitoring = browser.runtime.connectNative("interaction_monitoring");
-// var attack_checker = browser.runtime.connectNative("js_attack_checker");
-
-
 function contentScriptOnMeddage(data) {
-    interaction_monitoring.postMessage(data['tabURL'] + "--//*****Split*****//--" + data['data']);  // Send all documents of tabs to 'interaction_monitoring' script 
+    interactionMonitoring.postMessage(data['tabURL'] + "--//*****Split*****//--" + data['data']);  // Send all documents of tabs to 'interaction_monitoring' script
     // attack_checker.postMessage(data['tabURL'] + "--//*****Split*****//--" + data['data']);
 }
 
-
-interaction_monitoring.onMessage.addListener((response) => {
-
+function interactionMonitoringonMessage(response) {
     function sendAllDocument(){
         function infoTabs(tabs) {
 
             let tabsLength = 0;
             for (let tab of tabs) {
                 if (tab.url.startsWith("http") && tab.title !== "Problem loading page")
-                    tabsLength++;                   
+                    tabsLength++;
             }
 
-            interaction_monitoring.postMessage(tabsLength);  // Send length of Tabs to 'interaction_monitoring' script
+            interactionMonitoring.postMessage(tabsLength);  // Send length of Tabs to 'interaction_monitoring' script
             browser.runtime.onMessage.addListener(contentScriptOnMeddage);  // Add listener for get documents from content-script
 
             for (let tab of tabs) {
@@ -70,5 +64,20 @@ interaction_monitoring.onMessage.addListener((response) => {
     }
     else if (response === "stop") {
         browser.runtime.onMessage.removeListener(contentScriptOnMeddage); // Remove listener for get documents from content-script
+    }
+}
+
+
+var patternParser = browser.runtime.connectNative("pattern_parser");
+
+patternParser.onMessage.addListener((response) => {
+    response = JSON.parse(response)
+    if (response["parsed"]){
+        interactionMonitoring = browser.runtime.connectNative("interaction_monitoring");
+        interactionMonitoring.onMessage.addListener(interactionMonitoringonMessage);
+    }
+    else {
+        console.log(response["error"])
+        // TODO: Send message to UI
     }
 });

@@ -13,22 +13,11 @@ class FetchJSFromHTML(scrapy.Spider):
         yield scrapy.Request(url=file, callback=self.parse)
 
     def parse(self, response):
-        javascript_tags = response.css('script').getall()
+        javascript_tags = response.css('script::text').getall()
 
         with open("{}".format(js_file), "w+") as output:
             for js in javascript_tags:
-                if js.startswith("<script ") and js.endswith("></script>") and "src=" in js:
-                    # js_file.write(js[8:-10] + "\n")
-                    continue
-                elif js.startswith("<script>") and js.endswith("</script>"):
-                    output.write(js[8:-9] + "\n//--------------------------------------\n")
-                elif js.startswith("<script ") and js.endswith("</script>"):
-                    start = 8
-                    while True:
-                        if js[start] == ">":
-                            break
-                        start += 1
-                    output.write(js[start + 1:-9] + "\n//--------------------------------------\n")
+                output.write(js + "\n//--------------------------------------\n")
 
 
 if __name__ == "__main__":
