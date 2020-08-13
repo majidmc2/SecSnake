@@ -20,14 +20,11 @@ with open("../attack_pattern.json", "r") as conf_file:
         sys.exit()  # Exit from this code because InteractionMonitoring isn't configured
     if "configuration" in configure:
         if "interval" in configure["configuration"]:
-            if configure["configuration"]["interval"] > 10:
+            if configure["configuration"]["interval"] > 10 or configure["configuration"]["interval"] == -1:
                 interval = configure["configuration"]["interval"]
         if "thread" in configure["configuration"]:
-            if configure["configuration"]["thread"] > 5 or configure["configuration"]["thread"] == -1:
+            if configure["configuration"]["thread"] > 5:
                 thread = configure["configuration"]["thread"]
-
-
-con.send_message(con.encode_message(json.dumps({"status": "config"})))
 
 queue = queue.Queue()
 for i in range(thread):
@@ -49,6 +46,7 @@ while True:
     con.send_message(con.encode_message(json.dumps({"status": "stop"})))
 
     if interval == -1:
+        queue.join()
         sys.exit()  # Just for one time
 
     time.sleep(interval)

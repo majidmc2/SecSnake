@@ -85,6 +85,9 @@ function interactionMonitoringonMessage(response) {
         console.log("no-config")
         // TODO:createNotification or in ui
     }
+    else if (response["status"] === "find-attack") {
+        createNotification(response["title"], response["message"], response["contextMessage"])
+    }
 }
 
 
