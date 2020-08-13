@@ -28,7 +28,8 @@
     "<all_urls>",
     "webNavigation",
     "webRequestBlocking",
-    "tabs"
+    "tabs",
+    "notifications"
   ]
 
 }

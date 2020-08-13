@@ -5,18 +5,19 @@ import os
 
 
 class ThreadWorkers(threading.Thread):
-    def __init__(self, queue, connection):
+    def __init__(self, queue, connection, attack_pattern):
         super().__init__()
 
         self.queue = queue
         self.connection = connection
+        self.attack_pattern = attack_pattern
         self.attack_pattern = None
         self.html_file = None
         self.js_file = None
         self.url = None
 
     def __create_random_file_name(self, _format):
-        file_name =  "".join(random.choice(
+        file_name = "".join(random.choice(
             string.ascii_uppercase + string.ascii_lowercase + string.digits
         ) for _ in range(20)) + _format
         return file_name
@@ -44,4 +45,5 @@ class ThreadWorkers(threading.Thread):
         while True:
             self.__save_html_file()
             self.__extract_js_code()
+
             self.__task_done()

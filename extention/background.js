@@ -29,6 +29,18 @@
 
 // ---------------------------------------------------------------------
 
+let notificationId = "SecSnake"
+function createNotification(title, message, contextMessage="") {
+    browser.notifications.create(notificationId, {
+        "type": "basic",
+        "iconUrl": browser.runtime.getURL("icons/secsnake.png"),
+        "eventTime": 5000,
+        "title": title,
+        "message": message,
+        "contextMessage": contextMessage
+    });
+}
+
 
 function contentScriptOnMeddage(data) {
     interactionMonitoring.postMessage(data['tabURL'] + "--//*****Split*****//--" + data['data']);  // Send all documents of tabs to 'interaction_monitoring' script
@@ -59,11 +71,19 @@ function interactionMonitoringonMessage(response) {
         tabs_query.then(infoTabs);
     }
 
-    if (response === "start") {
+    response = JSON.parse(response)
+    if (response["status"] === "start") {
         sendAllDocument();
     }
-    else if (response === "stop") {
+    else if (response["status"] === "stop") {
         browser.runtime.onMessage.removeListener(contentScriptOnMeddage); // Remove listener for get documents from content-script
+    }
+    else if (response["status"] === "config") {
+        console.log("config")
+    }
+    else if (response["status"] === "no-config") {
+        console.log("no-config")
+        // TODO:createNotification or in ui
     }
 }
 
@@ -77,7 +97,7 @@ patternParser.onMessage.addListener((response) => {
         interactionMonitoring.onMessage.addListener(interactionMonitoringonMessage);
     }
     else {
-        console.log(response["error"])
+        createNotification("Error", response["error"])
         // TODO: Send message to UI
     }
 });
