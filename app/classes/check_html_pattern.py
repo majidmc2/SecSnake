@@ -7,27 +7,39 @@ from scrapy.crawler import CrawlerProcess
 
 
 class FetchJSFromHTML(scrapy.Spider):
-    name = "fetch_js_from_html_file"
+    name = "check_patterns_on_html_file"
 
     def start_requests(self):
         file = 'file://{}'.format(os.getcwd() + "/" + html_file)
         yield scrapy.Request(url=file, callback=self.parse)
 
     def parse(self, response):
-        if attribute:
-            tags = response.css('{tag}::attr({att})'.format(tag=tag, att=attribute)).getall()
-        else:
-            tags = response.css('{tag}'.format(tag=tag)).getall()
 
-        result = {"results": []}
+        result = dict()
 
-        for t in tags:
+        if witch == "data":
+            if attribute:
+                tags = response.css('{tag}::attr({att})'.format(tag=tag, att=attribute)).getall()
+            else:
+                tags = response.css('{tag}'.format(tag=tag)).getall()
+            result["results"] = list()
+            for t in tags:
+                with open("{}".format(pattern_file), "r") as pt:
+                    for p in pt.readlines():
+                        if t.strip() == p.strip():
+                            result["results"].append([t, p])
+
+        elif witch == "regexp":
             with open("{}".format(pattern_file), "r") as pt:
                 for p in pt.readlines():
-                    if t.strip() == p.strip():
-                        result["results"].append([t, p])
+                    if attribute:
+                        tags = response.css('{tag}::attr({att})'.format(tag=tag, att=attribute)).re(r'{}'.format(p.strip()))
+                    else:
+                        tags = response.css('{tag}'.format(tag=tag)).re(r'{}'.format(p.strip()))
 
-        with open("tmp/find_html_pattern/{output}".format(output=output.replace("html", "json")), "w+") as output_file:
+                    result["results"] = tags
+
+        with open("{output}".format(output=output), "w+") as output_file:
             output_file.write(json.dumps(result))
 
 
@@ -37,6 +49,7 @@ if __name__ == "__main__":
     tag = sys.argv[3]
     attribute = sys.argv[4]
     output = sys.argv[5]
+    witch = sys.argv[6]
 
     if attribute == "NO-ATT":
         attribute = None

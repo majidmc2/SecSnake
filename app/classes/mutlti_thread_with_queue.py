@@ -22,6 +22,9 @@ class ThreadWorkers(threading.Thread):
         ) for _ in range(20)) + _format
         return file_name
 
+    def __file_deleter(self, _file):
+        os.system("rm -rf {}".format(_file))
+
     def __save_html_file(self):
         data = self.queue.get().split("--//*****Split*****//--")
         self.url = data[0]
@@ -62,39 +65,63 @@ class ThreadWorkers(threading.Thread):
                                 }
                             )))
 
-    def __check_html_patterns(self):
-        for e in self.attack_pattern["interaction_monitoring"]["element"]:
-            if "data" in e["check"]:
-                cmd = "python3 classes/check_html_pattern.py tmp/html/{input} {patterns} {tag} {attribute} {out}"\
-                                .format(
-                                    input=self.html_file,
-                                    patterns=e["check"]["data"],
-                                    tag=e["tag"],
-                                    attribute="NO-ATT" if e["attribute"] == "" else e["attribute"],
-                                    out=self.html_file
-                                )
-                os.system(cmd)
+        self.__file_deleter("tmp/javascript/{file}".format(file=self.js_file))
 
-                with open("tmp/find_html_pattern/{out}".format(out=self.html_file.replace("html", "json")), "r+") as ch:
-                    result = json.loads(ch.read())
-                    if result["results"]:
-                        for r in result["results"]:
+    def __check_html_patterns(self):
+
+        def run_checker(pattern, tag, attribute, witch):
+            output_file = self.html_file.replace(".html", "_{}.json".format(witch))
+            cmd = "python3 classes/check_html_pattern.py tmp/html/{input} {patterns} {tag} {attribute}" \
+                  " tmp/find_html_pattern/{out} {witch}"\
+                                                    .format(
+                                                        input=self.html_file,
+                                                        patterns=pattern,
+                                                        tag=tag,
+                                                        attribute="NO-ATT" if attribute == "" else attribute,
+                                                        out=output_file,
+                                                        witch=witch
+                                                    )
+            os.system(cmd)
+
+            with open("tmp/find_html_pattern/{out}".format(out=output_file), "r+") as ch:
+                result = json.loads(ch.read())
+                if result["results"]:
+                    for r in result["results"]:
+                        if witch == "data":
                             self.connection.send_message(self.connection.encode_message(json.dumps(
                                 {
                                     "status": "find-attack",
                                     "title": "Interaction Monitoring",
                                     "message": "Find attack pattern in HTML",
-                                    "contextMessage": "Pattern: {pattern}\nURL: {url}\ntag:{tag}"
-                                    .format(
-                                        pattern=r[1],
+                                    "contextMessage": "Pattern: {pattern}\nURL: {url}\ntag:{tag}".format(
+                                                                                                    pattern=r[1],
+                                                                                                    url=self.url,
+                                                                                                    tag=r[0]
+                                                                                                )
+                                }
+                            )))
+
+                        elif witch == "regexp":
+                            self.connection.send_message(self.connection.encode_message(json.dumps(
+                                {
+                                    "status": "find-attack",
+                                    "title": "Interaction Monitoring",
+                                    "message": "Find attack pattern in HTML",
+                                    "contextMessage": "URL: {url}\nextract:{extract}".format(
                                         url=self.url,
-                                        tag=r[0]
+                                        extract=', '.join(r)
                                     )
                                 }
                             )))
 
-            if "regexp" in self.attack_pattern["interaction_monitoring"]["element"]["check"]:
-                pass
+            self.__file_deleter("tmp/find_html_pattern/{out}".format(out=output_file))
+
+        for e in self.attack_pattern["interaction_monitoring"]["element"]:
+            if "data" in e["check"]:
+                run_checker(e["check"]["data"], e["tag"], e["attribute"], "data")
+
+            if "regexp" in e["check"]:
+                run_checker(e["check"]["regexp"], e["tag"], e["attribute"], "regexp")
 
     def __task_done(self):
         self.queue.task_done()
