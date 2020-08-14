@@ -39,18 +39,18 @@ AttackPatternSchema = {
                         "type": "object",
                         "properties": {
                             "tag": {"type": "string"},
-                            "attribute": {"type": "string"},
+                            "property": {"type": "string"},
                             "check": {
                                 "type": "object",
                                 "properties": {
                                     "if_equal": {"type": ["number", "string"]},
-                                    "if_lees_than": {"type": ["number", "string"]},
-                                    "if_more_than": {"type": ["number", "string"]}
+                                    "if_lees_than": {"type": "number"},
+                                    "if_more_than": {"type": "number"}
                                 }
                             }
                         },
                         "additionalProperties": False,
-                        "required": ["tag", "attribute", "check"]
+                        "required": ["tag", "property", "check"]
                     }
                 },
 

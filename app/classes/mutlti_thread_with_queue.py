@@ -70,7 +70,7 @@ class ThreadWorkers(threading.Thread):
     def __check_html_patterns(self):
 
         def run_checker(pattern, tag, attribute, witch):
-            output_file = self.html_file.replace(".html", "_{}.json".format(witch))
+            output_file = self.__create_random_file_name(".json")
             cmd = "python3 classes/check_html_pattern.py tmp/html/{input} {patterns} {tag} {attribute}" \
                   " tmp/find_html_pattern/{out} {witch}"\
                                                     .format(
@@ -93,7 +93,7 @@ class ThreadWorkers(threading.Thread):
                                     "status": "find-attack",
                                     "title": "Interaction Monitoring",
                                     "message": "Find attack pattern in HTML",
-                                    "contextMessage": "Pattern: {pattern}\nURL: {url}\ntag:{tag}".format(
+                                    "contextMessage": "Pattern: {pattern}\nURL: {url}\nTag: {tag}".format(
                                                                                                     pattern=r[1],
                                                                                                     url=self.url,
                                                                                                     tag=r[0]
@@ -107,7 +107,7 @@ class ThreadWorkers(threading.Thread):
                                     "status": "find-attack",
                                     "title": "Interaction Monitoring",
                                     "message": "Find attack pattern in HTML",
-                                    "contextMessage": "URL: {url}\nextract:{extract}".format(
+                                    "contextMessage": "URL: {url}\nExtract: {extract}".format(
                                         url=self.url,
                                         extract=', '.join(r)
                                     )
@@ -122,6 +122,53 @@ class ThreadWorkers(threading.Thread):
 
             if "regexp" in e["check"]:
                 run_checker(e["check"]["regexp"], e["tag"], e["attribute"], "regexp")
+
+    def __check_css_patterns(self):
+        for css in self.attack_pattern["interaction_monitoring"]["css"]:
+            output_file = self.__create_random_file_name(".json")
+            css_value = ""
+            condition = ""
+            if "if_equal" in css["check"]:
+                condition = "if_equal"
+                css_value = css["check"]["if_equal"]
+            elif "if_lees_than" in css["check"]:
+                condition = "if_lees_than"
+                css_value = css["check"]["if_lees_than"]
+            elif "if_more_than" in css["check"]:
+                condition = "if_more_than"
+                css_value = css["check"]["if_more_than"]
+
+            cmd = "python3 classes/check_css_pattern.py tmp/html/{input} {tag} {css_property} {css_value} {condition} " \
+                  "tmp/find_html_pattern/{out}".format(
+                                                    input=self.html_file,
+                                                    tag=css["tag"],
+                                                    css_property=css["property"],
+                                                    css_value=css_value,
+                                                    condition=condition,
+                                                    out=output_file,
+                                                )
+
+            os.system(cmd)
+
+            with open("tmp/find_html_pattern/{out}".format(out=output_file), "r+") as ch:
+                result = json.loads(ch.read())
+                if result["results"]:
+                    for r in result["results"]:
+                        with open("logs.txt", "a+") as l: l.write("{}\n".format(r))
+                        self.connection.send_message(self.connection.encode_message(json.dumps(
+                            {
+                                "status": "find-attack",
+                                "title": "Interaction Monitoring",
+                                "message": "Find attack pattern in HTML",
+                                "contextMessage": "URL: {url}\nCondition:{condition}\nProperty: {css_property}\n"
+                                                                                    .format(
+                                                                                            url=self.url,
+                                                                                            condition=condition,
+                                                                                            css_property=r[condition],
+                                                                                    )
+                            }
+                        )))
+            self.__file_deleter("tmp/find_html_pattern/{out}".format(out=output_file))
 
     def __task_done(self):
         self.queue.task_done()
@@ -145,5 +192,11 @@ class ThreadWorkers(threading.Thread):
                     # TODO: Send message error to Extension
 
             # Check CSS values
+            if "css" in self.attack_pattern["interaction_monitoring"]:
+                if self.attack_pattern["interaction_monitoring"]["css"]:
+                    self.__check_css_patterns()
+                else:
+                    pass
+                    # TODO: Send message error to Extension
 
             self.__task_done()
