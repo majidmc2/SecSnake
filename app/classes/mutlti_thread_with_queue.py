@@ -62,15 +62,61 @@ class ThreadWorkers(threading.Thread):
                                 }
                             )))
 
+    def __check_html_patterns(self):
+        for e in self.attack_pattern["interaction_monitoring"]["element"]:
+            if "data" in e["check"]:
+                cmd = "python3 classes/check_html_pattern.py tmp/html/{input} {patterns} {tag} {attribute} {out}"\
+                                .format(
+                                    input=self.html_file,
+                                    patterns=e["check"]["data"],
+                                    tag=e["tag"],
+                                    attribute="NO-ATT" if e["attribute"] == "" else e["attribute"],
+                                    out=self.html_file
+                                )
+                os.system(cmd)
+
+                with open("tmp/find_html_pattern/{out}".format(out=self.html_file.replace("html", "json")), "r+") as ch:
+                    result = json.loads(ch.read())
+                    if result["results"]:
+                        for r in result["results"]:
+                            self.connection.send_message(self.connection.encode_message(json.dumps(
+                                {
+                                    "status": "find-attack",
+                                    "title": "Interaction Monitoring",
+                                    "message": "Find attack pattern in HTML",
+                                    "contextMessage": "Pattern: {pattern}\nURL: {url}\ntag:{tag}"
+                                    .format(
+                                        pattern=r[1],
+                                        url=self.url,
+                                        tag=r[0]
+                                    )
+                                }
+                            )))
+
+            if "regexp" in self.attack_pattern["interaction_monitoring"]["element"]["check"]:
+                pass
+
     def __task_done(self):
         self.queue.task_done()
 
     def run(self):
         while True:
             self.__save_html_file()
+
+            # Check JavaScript patterns
             if "javascript" in self.attack_pattern["interaction_monitoring"]:
                 self.__extract_js_code()
-                pattern_file = self.attack_pattern["interaction_monitoring"]["javascript"]["pattern"]
-                self.__semgrep(pattern_file)
+                js_pattern_file = self.attack_pattern["interaction_monitoring"]["javascript"]["pattern"]
+                self.__semgrep(js_pattern_file)
+
+            # Check HTML patterns
+            if "element" in self.attack_pattern["interaction_monitoring"]:
+                if self.attack_pattern["interaction_monitoring"]["element"]:
+                    self.__check_html_patterns()
+                else:
+                    pass
+                    # TODO: Send message error to Extension
+
+            # Check CSS values
 
             self.__task_done()
