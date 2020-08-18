@@ -25,7 +25,8 @@ AttackPatternSchema = {
                                 "properties": {
                                     "regexp": {"type": "string"},
                                     "data": {"type": "string"}
-                                }
+                                },
+                                "additionalProperties": False
                             }
                         },
                         "additionalProperties": False,
@@ -46,7 +47,8 @@ AttackPatternSchema = {
                                     "if_equal": {"type": ["number", "string"]},
                                     "if_lees_than": {"type": "number"},
                                     "if_more_than": {"type": "number"}
-                                }
+                                },
+                                "additionalProperties": False
                             }
                         },
                         "additionalProperties": False,
@@ -59,6 +61,7 @@ AttackPatternSchema = {
                     "properties": {
                         "pattern": {"type": "string"}
                     },
+                    "additionalProperties": False,
                     "required": ["pattern"]
                 }
             },
@@ -66,50 +69,55 @@ AttackPatternSchema = {
         },
 
         "on_before_request": {
-            "type": "object",
-            "properties": {
-                "type": {
-                    "type": "array",
-                    "items": {
-                        "type": "string",
-                        "enum": [
-                            "beacon",
-                            "csp_report",
-                            "font",
-                            "image",
-                            "imageset",
-                            "main_frame",
-                            "object_subrequest",
-                            "ping",
-                            "script",
-                            "speculative",
-                            "stylesheet",
-                            "sub_frame",
-                            "web_manifest",
-                            "websocket",
-                            "xbl",
-                            "xml_dtd",
-                            "xmlhttprequest",
-                            "xslt"
-                        ]
-                    }
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "beacon",
+                                "csp_report",
+                                "font",
+                                "image",
+                                "imageset",
+                                "main_frame",
+                                "object_subrequest",
+                                "ping",
+                                "script",
+                                "speculative",
+                                "stylesheet",
+                                "sub_frame",
+                                "web_manifest",
+                                "websocket",
+                                "xbl",
+                                "xml_dtd",
+                                "xmlhttprequest",
+                                "xslt"
+                            ]
+                        }
+                    },
+                    "method": {"type": "array"},
+                    "url": {
+                        "type": "object",
+                        "properties": {
+                            "decode_url": {"type": "boolean"},
+                            "regexp": {"type": "string"},
+                            "data": {"type": "string"}
+                        },
+                        "additionalProperties": False,
+                        "required": ["decode_url"]
+                    },
+                    "document_url": {"type": "boolean"},
+                    "origin_url": {"type": "boolean"},
+                    "main_frame": {"type": "boolean"},
+                    "parent_frame": {"type": "boolean"}
                 },
-                "method": {"type": "array"},
-                "url": {
-                    "type": "object",
-                    "properties": {
-                        "regexp": {"type": "string"},
-                        "data": {"type": "string"}
-                    }
-                },
-                "decode_url": {"type": "boolean"},
-                "document_url": {"type": "boolean"},
-                "origin_url": {"type": "boolean"},
-                "main_frame": {"type": "boolean"},
-                "parent_frame": {"type": "boolean"}
-            },
-            "additionalProperties": False,
-            "required": ["origin_url"]
+                "additionalProperties": False,
+                "required": ["origin_url"]
+            }
         }
     }
 }

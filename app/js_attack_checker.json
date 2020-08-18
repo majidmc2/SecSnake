@@ -1,7 +1,0 @@
-{
-  "name": "js_attack_checker",
-  "description": "Example host for native messaging",
-  "path": "/home/majidmc2/Documents/SecSnake/app/js_attack_checker.py",
-  "type": "stdio",
-  "allowed_extensions": [ "{bb3ff054-d96d-11ea-ab75-85908bff670e}" ]
-}

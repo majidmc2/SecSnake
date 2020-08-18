@@ -1,34 +1,3 @@
-// function rewriteUserAgentHeader(e) {
-// 	console.log("-------> The URL: " + e.originUrl)
-// 	for (var header of e.requestHeaders) {
-// 		console.log("-------> Header Fileds: " + header.name + " = " + header.value);
-// 	}
-// 	console.log("----------------");
-//   }
-  
-//   browser.webRequest.onBeforeSendHeaders.addListener(rewriteUserAgentHeader,
-// 											{urls: ["<all_urls>"]},
-// 											["blocking", "requestHeaders"]);
-
-// function listener(e) {
-// 	console.log("**************************************")
-//   console.log("-------> The tabId   : " + e.tabId)
-//   console.log("-------> The originUrl   : " + e.originUrl)
-//   console.log("-------> The documentUrl : " + e.documentUrl)
-//   console.log("-------> The url         : " + e.url)
-//   console.log("-------> The typr        : " + e.type)
-// 	console.log("**************************************")
-// 	}
-	
-// browser.webRequest.onBeforeRequest.addListener(
-// 	listener,
-// 	{urls: ["<all_urls>"]},
-// 	["blocking"]
-// );
-
-
-// ---------------------------------------------------------------------
-
 let notificationId = "SecSnake"
 function createNotification(title, message, contextMessage="") {
     browser.notifications.create(notificationId, {
@@ -41,10 +10,8 @@ function createNotification(title, message, contextMessage="") {
     });
 }
 
-
 function contentScriptOnMeddage(data) {
     interactionMonitoring.postMessage(data['tabURL'] + "--//*****Split*****//--" + data['data']);  // Send all documents of tabs to 'interaction_monitoring' script
-    // attack_checker.postMessage(data['tabURL'] + "--//*****Split*****//--" + data['data']);
 }
 
 function interactionMonitoringonMessage(response) {
@@ -79,28 +46,101 @@ function interactionMonitoringonMessage(response) {
         browser.runtime.onMessage.removeListener(contentScriptOnMeddage); // Remove listener for get documents from content-script
     }
     else if (response["status"] === "config") {
-        console.log("config")
+        console.log("config");
     }
     else if (response["status"] === "no-config") {
-        console.log("no-config")
+        console.log("pattern-no-config");
         // TODO:createNotification or in ui
     }
     else if (response["status"] === "find-attack") {
-        createNotification(response["title"], response["message"], response["contextMessage"])
+        createNotification(response["title"], response["message"], response["contextMessage"]);
     }
 }
 
+function blockRequest(requestDetails) {
+    for (let i = 0; i < conditions.length; i++) {
+
+        let condition = conditions[i]
+        var block = true
+
+        if ("type" in condition) {
+            for (let t of condition.type)
+                block &= t === requestDetails.type;
+        }
+
+        if ("method" in condition) {
+            for (let m of condition.method)
+                 block &= m === requestDetails.method;
+        }
+
+        if ("url" in condition) {
+            var URL = requestDetails.url
+            if (condition.decode_url)
+                URL = decodeURIComponent(requestDetails.url);
+
+            if ("data" in condition.url)
+                block &= condition.url.data === URL;
+
+            if ("regexp" in condition.url) {
+                let reg = new RegExp(URL);
+                block &= reg.test(requestDetails.url);
+            }
+        }
+
+        if ("document_url"in condition) {
+            if (condition.document_url)
+                block &= condition.document_url !== requestDetails.url;
+        }
+
+        if ("origin_url"in condition) {
+            if (condition.origin_url)
+                block &= condition.origin_url !== requestDetails.url;
+        }
+
+        if ("main_frame"in condition) {
+            if (condition.main_frame)
+                block &= condition.main_frame !== 0;
+        }
+
+        if ("parent_frame"in condition) {
+            if (condition.parent_frame)
+                block &= condition.parent_frame !== -1;
+        }
+
+        if (block) {
+            createNotification("Block Request", "URL: " + requestDetails.url);
+            return {cancel: true};
+        }
+    }
+}
+
+function requestAnalyzeronMessage(response) {
+    response = JSON.parse(response)
+    if (response["status"] === "start") {
+        conditions = response["data"];
+        browser.webRequest.onBeforeRequest.addListener(blockRequest, {urls: ["<all_urls>"]}, ["blocking"]);
+    }
+    else if (response["status"] === "no-config") {
+        console.log("request-no-config");
+        // TODO:createNotification or in ui
+    }
+}
+
+// --------------------------------------------- main ---------------------------------------------
 
 var patternParser = browser.runtime.connectNative("pattern_parser");
 
 patternParser.onMessage.addListener((response) => {
-    response = JSON.parse(response)
+    response = JSON.parse(response);
     if (response["parsed"]){
         interactionMonitoring = browser.runtime.connectNative("interaction_monitoring");
         interactionMonitoring.onMessage.addListener(interactionMonitoringonMessage);
+
+        requestAnalyzer = browser.runtime.connectNative("request_analyzer");
+        requestAnalyzer.onMessage.addListener(requestAnalyzeronMessage);
     }
     else {
-        createNotification("Error", response["error"])
+        createNotification("Error", response["error"]);
         // TODO: Send message to UI
     }
 });
