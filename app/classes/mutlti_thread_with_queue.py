@@ -199,4 +199,6 @@ class ThreadWorkers(threading.Thread):
                     pass
                     # TODO: Send message error to Extension
 
+            self.__file_deleter("tmp/html/{file}".format(file=self.html_file))
+
             self.__task_done()

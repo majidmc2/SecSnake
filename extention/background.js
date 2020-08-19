@@ -1,12 +1,18 @@
+browser.storage.local.clear()
+keyCounter = 0
+function setToStorage(value) {
+    browser.storage.local.set({[keyCounter]: value});
+    keyCounter++;
+}
+
 let notificationId = "SecSnake"
-function createNotification(title, message, contextMessage="") {
+function createNotification(title, message) {
     browser.notifications.create(notificationId, {
         "type": "basic",
         "iconUrl": browser.runtime.getURL("icons/secsnake.png"),
         "eventTime": 5000,
         "title": title,
-        "message": message,
-        "contextMessage": contextMessage
+        "message": message
     });
 }
 
@@ -45,15 +51,11 @@ function interactionMonitoringonMessage(response) {
     else if (response["status"] === "stop") {
         browser.runtime.onMessage.removeListener(contentScriptOnMeddage); // Remove listener for get documents from content-script
     }
-    else if (response["status"] === "config") {
-        console.log("config");
-    }
     else if (response["status"] === "no-config") {
-        console.log("pattern-no-config");
-        // TODO:createNotification or in ui
+        createNotification("Interaction Monitoring", "No config for interaction monitoring");
     }
     else if (response["status"] === "find-attack") {
-        createNotification(response["title"], response["message"], response["contextMessage"]);
+        setToStorage({title: response["title"], message: response["message"], contextMessage: response["contextMessage"]});
     }
 }
 
@@ -108,7 +110,7 @@ function blockRequest(requestDetails) {
         }
 
         if (block) {
-            createNotification("Block Request", "URL: " + requestDetails.url);
+            setToStorage({title: "Request Analyzer", message: "Blocked the request", contextMessage: "URL: " + requestDetails.url});
             return {cancel: true};
         }
     }
@@ -121,8 +123,7 @@ function requestAnalyzeronMessage(response) {
         browser.webRequest.onBeforeRequest.addListener(blockRequest, {urls: ["<all_urls>"]}, ["blocking"]);
     }
     else if (response["status"] === "no-config") {
-        console.log("request-no-config");
-        // TODO:createNotification or in ui
+        createNotification("Request Analyzer", "No config for request analyzer");
     }
 }
 
@@ -141,6 +142,5 @@ patternParser.onMessage.addListener((response) => {
     }
     else {
         createNotification("Error", response["error"]);
-        // TODO: Send message to UI
     }
 });
