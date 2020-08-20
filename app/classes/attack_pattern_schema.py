@@ -45,7 +45,7 @@ AttackPatternSchema = {
                                 "type": "object",
                                 "properties": {
                                     "if_equal": {"type": ["number", "string"]},
-                                    "if_lees_than": {"type": "number"},
+                                    "if_less_than": {"type": "number"},
                                     "if_more_than": {"type": "number"}
                                 },
                                 "additionalProperties": False

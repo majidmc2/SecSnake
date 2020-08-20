@@ -87,32 +87,18 @@ class ThreadWorkers(threading.Thread):
                 result = json.loads(ch.read())
                 if result["results"]:
                     for r in result["results"]:
-                        if witch == "data":
-                            self.connection.send_message(self.connection.encode_message(json.dumps(
-                                {
-                                    "status": "find-attack",
-                                    "title": "Interaction Monitoring",
-                                    "message": "Find attack pattern in HTML",
-                                    "contextMessage": "Pattern: {pattern}\nURL: {url}\nTag: {tag}".format(
-                                                                                                    pattern=r[1],
-                                                                                                    url=self.url,
-                                                                                                    tag=r[0]
-                                                                                                )
-                                }
-                            )))
-
-                        elif witch == "regexp":
-                            self.connection.send_message(self.connection.encode_message(json.dumps(
-                                {
-                                    "status": "find-attack",
-                                    "title": "Interaction Monitoring",
-                                    "message": "Find attack pattern in HTML",
-                                    "contextMessage": "URL: {url}\nExtract: {extract}".format(
-                                        url=self.url,
-                                        extract=', '.join(r)
-                                    )
-                                }
-                            )))
+                        self.connection.send_message(self.connection.encode_message(json.dumps(
+                            {
+                                "status": "find-attack",
+                                "title": "Interaction Monitoring",
+                                "message": "Find attack pattern in HTML",
+                                "contextMessage": "URL: {url}\nPattern: {pattern}\nTag: {tag}".format(
+                                                                                                url=self.url,
+                                                                                                pattern=r[1],
+                                                                                                tag=r[0]
+                                                                                            )
+                            }
+                        )))
 
             self.__file_deleter("tmp/find_html_pattern/{out}".format(out=output_file))
 

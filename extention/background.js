@@ -72,20 +72,20 @@ function blockRequest(requestDetails) {
 
         if ("method" in condition) {
             for (let m of condition.method)
-                 block &= m === requestDetails.method;
+                block &= m === requestDetails.method;
         }
 
         if ("url" in condition) {
             var URL = requestDetails.url
-            if (condition.decode_url)
+            if (condition.url.decode_url)
                 URL = decodeURIComponent(requestDetails.url);
 
             if ("data" in condition.url)
                 block &= condition.url.data === URL;
 
             if ("regexp" in condition.url) {
-                let reg = new RegExp(URL);
-                block &= reg.test(requestDetails.url);
+                let reg = new RegExp(condition.url.regexp);
+                block &= reg.test(URL);
             }
         }
 

@@ -2,6 +2,7 @@ import sys
 import scrapy
 import os
 import json
+import re
 
 from scrapy.crawler import CrawlerProcess
 
@@ -15,29 +16,22 @@ class FetchJSFromHTML(scrapy.Spider):
 
     def parse(self, response):
 
-        result = dict()
+        result = {"results": list()}
 
-        if witch == "data":
-            if attribute:
-                tags = response.css('{tag}::attr({att})'.format(tag=tag, att=attribute)).getall()
-            else:
-                tags = response.css('{tag}'.format(tag=tag)).getall()
-            result["results"] = list()
-            for t in tags:
-                with open("{}".format(pattern_file), "r") as pt:
-                    for p in pt.readlines():
+        if attribute:
+            tags = response.css('{tag}::attr({att})'.format(tag=tag, att=attribute)).getall()
+        else:
+            tags = response.css('{tag}'.format(tag=tag)).getall()
+
+        with open("{}".format(pattern_file), "r") as pt:
+            for p in pt.readlines():
+                for t in tags:
+                    if witch == "regexp":
+                        if re.match(p.strip(), t) is not None:
+                            result["results"].append([t, p])
+                    elif witch == "data":
                         if t.strip() == p.strip():
                             result["results"].append([t, p])
-
-        elif witch == "regexp":
-            with open("{}".format(pattern_file), "r") as pt:
-                for p in pt.readlines():
-                    if attribute:
-                        tags = response.css('{tag}::attr({att})'.format(tag=tag, att=attribute)).re(r'{}'.format(p.strip()))
-                    else:
-                        tags = response.css('{tag}'.format(tag=tag)).re(r'{}'.format(p.strip()))
-
-                    result["results"] = tags
 
         with open("{output}".format(output=output), "w+") as output_file:
             output_file.write(json.dumps(result))
