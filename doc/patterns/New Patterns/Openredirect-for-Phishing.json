@@ -1,0 +1,12 @@
+{
+    "on_before_request": [
+          {
+              "method": ["GET"],
+              "origin_url": true,
+              "url": {
+                  "decode_url": true,
+                  "regexp": "/home/sig.txt"
+              }
+          }
+    ]
+}

@@ -1,0 +1,71 @@
+{
+    "configuration": {
+      "interval": 10,
+      "thread": 5
+    },
+
+    "interaction_monitoring": {
+      "element": [
+          {
+            "tag": "a",
+            "attribute": "herf",
+            "check": {
+              "regexp": "/home/signatures.txt"
+            }
+          },
+          {
+            "tag": "form input",
+            "attribute": "type",
+            "check": {
+              "data": "/home/signatures.txt"
+            }
+          }
+      ],
+
+      "css": [
+          {
+            "tag": "iframe",
+            "property": "opacity",
+            "check": {
+              "if_equal": 0
+            },
+            "tag": "iframe",
+            "property": "z-index",
+            "check": {
+              "if_equal": 0
+            }
+          },
+          {
+            "tag": "embed",
+            "property": "opacity",
+            "check": {
+              "if_equal": 0
+            },
+            "tag": "embed",
+            "property": "z-index",
+            "check": {
+              "if_equal": 0
+            }
+          },
+          {
+            "tag": "object",
+            "property": "opacity",
+            "check": {
+              "if_equal": 0
+            },
+            "tag": "object",
+            "property": "z-index",
+            "check": {
+              "if_equal": 0
+            }
+          }
+      ]
+    },
+
+    "on_before_request": [
+      {
+        "type": ["image", "script", "sub_frame"],
+        "origin_url": false
+      }
+    ]
+}

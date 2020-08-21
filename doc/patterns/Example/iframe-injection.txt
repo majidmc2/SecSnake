@@ -1,0 +1,47 @@
+Target: http://bWAPP/iframei.php?ParamUrl=http://google.com&ParamWidth=0&ParamHeight=0
+
+Target: http://192.168.1.104/dvwa/vulnerabilities/xss_r/?name=%3C%2Fpre%3E%3Ciframe+frameborder%3D%220%22+src%3D%22http%3A%2F%2F192.168.1.104%22+height%3D%220%22+width%3D%220%22%3E%3C%2Fiframe%3E%3Cpre%3E#
+
+Pattern:
+{
+    "on_before_request": [
+        {
+            "method": ["GET"],
+            "origin_url": false,
+            "url": {
+                  "decode_url": true,
+                  "regexp": "http.*http.*"
+             }
+        }
+    ]
+}
+
+
+
+#TODO: ----------------------> it is not working because CSS is not in 'style=""' attribute.
+
+Pattern:
+{
+    "configuration": {
+      "interval": 10,
+      "thread": 5
+    },
+
+    "interaction_monitoring": {
+      "css": [
+          {
+            "tag": "iframe",
+            "property": "height",
+            "check": {
+              "if_equal": 0
+            },
+            "tag": "iframe",
+            "property": "width",
+            "check": {
+              "if_equal": 0
+            }
+          }
+      ]
+    }
+}
+

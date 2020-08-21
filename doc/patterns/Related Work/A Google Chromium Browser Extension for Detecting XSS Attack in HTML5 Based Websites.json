@@ -1,0 +1,81 @@
+{
+    "configuration": {
+      "interval": 10,
+      "thread": 5
+    },
+
+    "interaction_monitoring": {
+      "element": [
+          {
+            "tag": "input",
+            "attribute": "onblur",
+            "check": {
+              "regexp": "/home/xss-signatures.txt"
+            }
+          },
+          {
+            "tag": "video",
+            "attribute": "poster",
+            "check": {
+              "regexp": "/home/xss-signatures.txt"
+            }
+          },
+          {
+            "tag": "body",
+            "attribute": "onscroll",
+            "check": {
+              "regexp": "/home/xss-signatures.txt"
+            }
+          },
+          {
+            "tag": "form",
+            "attribute": "onforminput",
+            "check": {
+              "regexp": "/home/xss-signatures.txt"
+            }
+          },
+          {
+            "tag": "video",
+            "attribute": "onerror",
+            "check": {
+              "data": "/home/xss-signatures.txt"
+            }
+          },
+          {
+            "tag": "button",
+            "attribute": "formaction",
+            "check": {
+              "data": "/home/xss-signatures.txt"
+            }
+          },
+          {
+            "tag": "body",
+            "attribute": "onformchange",
+            "check": {
+              "data": "/home/xss-signatures.txt"
+            }
+          },
+          {
+            "tag": "svg",
+            "attribute": "onload",
+            "check": {
+              "data": "/home/xss-signatures.txt"
+            }
+          },
+          {
+            "tag": "a",
+            "attribute": "herf",
+            "check": {
+              "data": "/home/xss-signatures.txt"
+            }
+          },
+          {
+            "tag": "image",
+            "attribute": "onerror",
+            "check": {
+              "data": "/home/xss-signatures.txt"
+            }
+          }
+      ]
+    }
+}

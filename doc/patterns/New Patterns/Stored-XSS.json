@@ -1,0 +1,18 @@
+{
+    "configuration": {
+      "interval": -1,
+      "thread": 5
+    },
+
+    "interaction_monitoring": {
+      "element": [
+        {
+          "tag": "input",
+          "attribute": "type=text",
+          "check": {
+            "regexp": "/home/stored-xss-signatures.txt"
+          }
+        }
+      ]
+    }
+}

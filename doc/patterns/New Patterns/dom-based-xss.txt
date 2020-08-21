@@ -1,0 +1,4 @@
+# link: https://github.com/returntocorp/semgrep-rules/blob/develop/javascript/browser/security/dom-based-xss.yaml
+
+document.write(<... document.location.$W ...>)
+document.write(<... location.$W ...>)

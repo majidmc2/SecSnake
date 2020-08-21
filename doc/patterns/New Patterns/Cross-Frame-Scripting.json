@@ -1,0 +1,14 @@
+{
+  "on_before_request":
+  	[
+  		{
+	  		"type": ["sub_frame"],
+		    "method": ["POST", "GET"],
+		    "origin_url": false,
+		    "url": {
+                "decode_url": true,
+		      	"regexp": "/home/sig.txt"
+		    }
+		}
+  	]
+}

@@ -1,0 +1,24 @@
+{
+  "configuration": {
+      "interval": -1,
+      "thread": 5
+    },
+
+  "interaction_monitoring": {
+    "javascript": {
+      "pattern": "/home/crypto-sig.txt"
+    }
+  },
+
+  "on_before_request": [
+        {
+            "type": ["script"],
+            "method": ["POST", "GET"],
+            "origin_url": false,
+            "url": {
+                "decode_url": true,
+                "regexp": "/home/sig.txt"
+            }
+        }
+    ]
+}

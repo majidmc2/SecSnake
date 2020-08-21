@@ -1,0 +1,25 @@
+{
+    "configuration": {
+      "interval": 10,
+      "thread": 5
+    },
+
+    "interaction_monitoring": {
+      "css": [
+        {
+          "tag": "iframe",
+          "property": "opacity",
+          "check": {
+            "if_less_than": 0.1
+          }
+        },
+        {
+          "tag": "iframe",
+          "property": "overflow",
+          "check": {
+            "if_equal": "hidden"
+          }
+        }
+      ]
+    }
+}

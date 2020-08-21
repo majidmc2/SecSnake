@@ -1,0 +1,56 @@
+Target: http://192.168.1.104/bWAPP/htmli_get.php?firstname=%3Cimg%20src=%22z%22%20onerror=%22alert(%27HI%27)%22%3E&lastname=asd&form=submit
+
+Pattern:
+{
+    "on_before_request": [
+        {
+            "method": ["GET"],
+            "origin_url": false,
+            "url": {
+                  "decode_url": true,
+                  "regexp": "http.*<img.*>.*"
+             }
+        }
+    ]
+}
+
+
+Pattern:
+{
+  "configuration": {
+    "interval": -1,
+        "thread": 5
+    },
+    "interaction_monitoring": {
+      "element": [
+          {
+              "tag": "img",
+              "attribute": "onerror",
+              "check": {
+                "regexp": "/home/majidmc2/Desktop/xss.txt"
+            }
+        }
+      ]
+    }
+}
+
+
+Pattern:
+{
+  "configuration": {
+    "interval": -1,
+        "thread": 5
+    },
+    "interaction_monitoring": {
+      "element": [
+          {
+              "tag": "img",
+              "attribute": "NO-ATT",
+              "check": {
+                "data": "/home/majidmc2/Desktop/xss2.txt"
+            }
+        }
+      ]
+    }
+}
+

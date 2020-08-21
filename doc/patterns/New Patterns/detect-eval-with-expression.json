@@ -1,0 +1,11 @@
+{
+  "configuration": {
+      "interval": 10,
+      "thread": 5
+  },
+  "interaction_monitoring": {
+    	"javascript": {
+      		"pattern": "detect-eval-with-expression.txt"
+ 		}
+   }
+}
