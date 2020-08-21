@@ -63,16 +63,22 @@ function blockRequest(requestDetails) {
     for (let i = 0; i < conditions.length; i++) {
 
         let condition = conditions[i]
+
+        if ("white_list" in condition) {
+            if (condition.white_list.includes(requestDetails.url))
+                return {cancel: false};
+        }
+
         var block = true
 
         if ("type" in condition) {
-            for (let t of condition.type)
-                block &= t === requestDetails.type;
+            if (condition.type.includes(requestDetails.type))
+                block &= true;
         }
 
         if ("method" in condition) {
-            for (let m of condition.method)
-                block &= m === requestDetails.method;
+            if (condition.method.includes(requestDetails.method))
+                block &= true;
         }
 
         if ("url" in condition) {
@@ -89,28 +95,50 @@ function blockRequest(requestDetails) {
             }
         }
 
-        if ("document_url"in condition) {
-            if (condition.document_url)
-                block &= condition.document_url !== requestDetails.url;
+        if ("document_url" in condition) {
+            if (condition.document_url) {
+                if (requestDetails.documentUrl !== undefined) {
+                    let documentUrl = requestDetails.documentUrl.split('/');
+                    documentUrl = documentUrl[0] + '//' + documentUrl[2];
+                    let url = requestDetails.url.split('/');
+                    url = url[0] + '//' + url[2];
+                    block &= url !== documentUrl;
+                }
+                else
+                    block &= false
+            }
         }
 
-        if ("origin_url"in condition) {
-            if (condition.origin_url)
-                block &= condition.origin_url !== requestDetails.url;
+        if ("origin_url" in condition) {
+            if (condition.origin_url) {
+                if (requestDetails.originUrl !== undefined) {
+                    let originUrl = requestDetails.originUrl.split('/');
+                    originUrl = originUrl[0] + '//' + originUrl[2];
+                    let url = requestDetails.url.split('/');
+                    url = url[0] + '//' + url[2];
+                    block &= url !== originUrl;
+                }
+                else
+                    block &= false
+            }
         }
 
-        if ("main_frame"in condition) {
+        if ("main_frame" in condition) {
             if (condition.main_frame)
-                block &= condition.main_frame !== 0;
+                block &= requestDetails.frameId !== 0;
         }
 
-        if ("parent_frame"in condition) {
+        if ("parent_frame" in condition) {
             if (condition.parent_frame)
-                block &= condition.parent_frame !== -1;
+                block &= requestDetails.parentFrameId !== -1;
         }
 
         if (block) {
-            setToStorage({title: "Request Analyzer", message: "Blocked the request", contextMessage: "URL: " + requestDetails.url});
+            setToStorage({
+                title: "Request Analyzer",
+                message: "Blocked the request",
+                contextMessage: "URL: " + requestDetails.url
+            });
             return {cancel: true};
         }
     }

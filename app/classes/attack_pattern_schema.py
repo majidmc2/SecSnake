@@ -73,6 +73,7 @@ AttackPatternSchema = {
             "items": {
                 "type": "object",
                 "properties": {
+                    "white_list": {"type": "array"},
                     "type": {
                         "type": "array",
                         "items": {
