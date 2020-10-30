@@ -1,7 +1,7 @@
 ![](extention/icons/secsnake.png)                    
 
 ## About
-**SecSnake** is a Man-in-the-Browser (MitB) attack finder tool that it works with four main modules:
+**SecSnake** is a Client-Side-Attack finder tool that it works with four main modules:
 1. Web Extension: This module installed on the browser and gets all documents and request for analyze and shows notification and results to user.
 2. Pattern Parser: This module parses **attack_pattern.json** that wrote with user (For get information about how this file can be configured, see **/app/classes/attack_pattern_schema.py**).
 3. Interaction Monitoring: This module finds all attack patterns on HTML attribute, CSS properties and JavaScript codes.
