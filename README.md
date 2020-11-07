@@ -2,8 +2,8 @@
 
 ## About
 **SecSnake** is a Client-Side-Attack finder tool that it works with four main modules:
-1. Web Extension: This module installed on the browser and gets all documents and request for analyze and shows notification and results to user.
-2. Pattern Parser: This module parses **attack_pattern.json** that wrote with user (For get information about how this file can be configured, see **/app/classes/attack_pattern_schema.py**).
+1. Web Extension: This module installed in the browser and gets all documents and request for analyzing and shows notification and results to the user.
+2. Pattern Parser: This module parses **attack_pattern.json** that wrote with user (To get information about how this file can be configured, see **/app/classes/attack_pattern_schema.py**).
 3. Interaction Monitoring: This module finds all attack patterns on HTML attribute, CSS properties and JavaScript codes.
 4. Request Analyzer: This module Blocks the request that it has a bad property. 
 
@@ -12,7 +12,7 @@
 #### Requirements
 > Python3.*
 
-> semgrep
+> semgrep(https://github.com/returntocorp/semgrep)
 
 > scrapy
 
